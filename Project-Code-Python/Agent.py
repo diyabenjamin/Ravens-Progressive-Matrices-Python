@@ -10,7 +10,7 @@
 
 # Install Pillow and uncomment this line to access image processing.
 import numpy as np
-from PIL import Image, ImageChops, ImageStat, ImageDraw, ImageFilter, ImageOps
+from PIL import Image, ImageChops, ImageDraw
 
 
 class Agent:
@@ -142,7 +142,7 @@ class Agent:
                 if index > 0:
                     return index
 
-        # Challenge B-09/ Basic B-10/B-11
+        # Basic B-10/B-11
         diff_image = ImageChops.invert(ImageChops.difference(image_a, image_b))
         new_image = ImageChops.invert(ImageChops.difference(image_c, diff_image))
         option = 0
@@ -158,90 +158,22 @@ class Agent:
             return option
 
         # Basic B-09
-
-        invert_a = ImageChops.invert(image_a)
-        new_image = ImageChops.add(invert_a, image_b)
-        similarity_ratio_a_b = self.get_similarity_ratio(new_image, image_b)
-        print similarity_ratio_a_b
-
+        new_image_a = self.fill_image(image_a)
+        similarity_ratio_a_b = self.get_similarity_ratio(new_image_a, image_b)
 
         if round(similarity_ratio_a_b, 2) >= 0.97:
-            invert_c = ImageChops.invert(image_c)
             option = 0
             max_similarity_ratio = 0
-
             for i in range(1, 7):
-                new_image = ImageChops.add(invert_c, image_numbers[i])
-                similarity_ratio = self.get_similarity_ratio(new_image, image_numbers[i])
-                print i, similarity_ratio
-                if round(similarity_ratio) > 0.97 and similarity_ratio > max_similarity_ratio:
+                new_image_c = self.fill_image(image_c)
+                similarity_ratio = self.get_similarity_ratio(new_image_c, image_numbers[i])
+                if round(similarity_ratio, 2) >= 0.97 and similarity_ratio > max_similarity_ratio:
                     option = i
                     max_similarity_ratio = similarity_ratio
 
             if option > 0:
-                print 'Basic B-09'
+                print 'Fill image - Basic B-09'
                 return option
-
-
-
-
-        # count_white = 0
-        # count_white2 = 0
-        # for i in array_abin:
-        #     if i == 1:
-        #         count_white += 1
-        #     else:
-        #         count_white = 0
-        # print 'count', count_white
-
-        # print 'Shape- M1:'
-        # m1 = ImageChops.multiply(image_a, image_c)
-        # n1 = np.array(m1)
-        # print m1.show()
-        # print 'count Non Zero n1: ', float(np.count_nonzero(n1))/n1.size
-        # print('count Non Zero n1: ', np.count_nonzero(n1 >= 128))
-        # print(self.get_binary_images(m1))
-
-        # array1 = np.array(m1.convert('L'))
-        # unique, counts = np.unique(array1, return_counts=True)
-        # print unique
-        # print counts[0]
-        # print counts[1]
-        # print dict(zip(unique, counts))
-
-        # print 'Shape - M2:'
-        # m2 = ImageChops.multiply(image_c, image_numbers[5])
-        # n2 = np.array(m2)
-        # print('count Non Zero n2: ', np.count_nonzero(n2 < 128))
-        # print('count Non Zero n2: ', np.count_nonzero(n2 >= 128))
-
-        # array2 = np.array(m2.convert('L'))
-        # unique, counts = np.unique(array2, return_counts=True)
-        # print unique
-        # print counts[0]
-        # print counts[1]
-        # print dict(zip(unique, counts))
-
-        # o1 = ImageStat.Stat(m1, mask='mean')
-        # print o1
-        # print ImageStat.mean(m2)
-
-        # image_a.filter(ImageFilter.FIND_EDGES).show()
-
-        # """Return the number of pixels in img that are not black.
-        #     img must be a PIL.Image object in mode RGB.
-        # """
-        # bbox = image_a.getbbox()
-        # if bbox:
-        #     print '***** ', sum(image_a.crop(bbox)
-        #                         .point(lambda x: 255 if x else 0)
-        #                         .convert("L")
-        #                         .point(bool)
-        #                         .getdata())
-
-        # image_a.filter(ImageFilter.FIND_EDGES).show()
-        mask = image_a.convert('L').point(lambda i: i < 150 and 255)
-        # mask.rotate(45).show()
 
         return -1
 
@@ -264,66 +196,9 @@ class Agent:
         difference_ratio = np.sum(difference_matrix) / float(rows * columns)
         return 1 - difference_ratio
 
-    def get_percent_diff(self, image1, image2):
-        image1_arr = np.array(image1)
-        image2_arr = np.array(image2)
-        err = np.sum((image1_arr.astype("float") - image2_arr.astype("float")) ** 2)
-        err /= float(image1_arr.shape[0] * image1_arr.shape[1])
-        return err * 100
-
-    def rms_difference(self, img1, img2):
-        image1 = img1.convert('L')
-        image2 = img2.convert('L')
-        histogram = ImageChops.difference(image1, image2).histogram()
-        sum_of_squares = sum(value * (idx ** 2) for idx, value in enumerate(histogram))
-        rms_difference = (sum_of_squares / float(image1.size[0] * image2.size[1])) ** 0.5
-        return rms_difference
-
-    # def get_black_white_ratio(self, image1, image2):
-    #     # img1_bin = self.get_binary_images(image1)
-    #     # img2_bin = self.get_binary_images(image2)
-    #     # img1_bin1 = img1_bin.reshape(img1_bin.shape[0] * img1_bin.shape[1])
-    #     # img2_bin2 = img2_bin.reshape(img2_bin.shape[0] * img2_bin.shape[1])
-    #     img1_ratio = 0
-    #     img2_ratio = 0
-    #     for pixel in image1.getdata():
-    #         if pixel == (0, 0, 0, 255):
-    #             img1_ratio += 1
-    #     for pixel2 in image2.getdata():
-    #         if pixel2 == (255, 255, 255, 255):
-    #             img2_ratio += 1
-    #     return float(img2_ratio) / img1_ratio
-
-    # def similar(self, other):
-    #     if self.image is None:
-    #         self.make_image()
-    #     if other.image is None:
-    #         other.make_image()
-    #
-    #     if self.is_filled != other.is_filled:
-    #         return False
-    #
-    #     max_similarity = 0
-    #     for x_offset in range(-3, 4, 1):
-    #         for y_offset in range(-3, 4, 1):
-    #             diff = ImageChops.difference(ImageChops.offset(self.image, x_offset, y_offset), other.image)
-    #             num_pixels = max(self.image.size[0], other.image.size[0]) * max(self.image.size[1],
-    #                                                                             other.image.size[1])
-    #             diff_stats = ImageStat.Stat(diff)
-    #             similarity = 1.0 - ((diff_stats.sum[0] / 255) / num_pixels)
-    #             max_similarity = max(similarity, max_similarity)
-    #     return max_similarity >= self.threshold
-    #
-    # def find_centroid(self):
-    #     x_total = 0
-    #     y_total = 0
-    #
-    #     for pixel in self.area:
-    #         x_total += pixel[0]
-    #         y_total += pixel[1]
-    #
-    #     x_cen = round(x_total / len(self.area), 0)
-    #     y_cen = round(y_total / len(self.area), 0)
-    #
-    #     self.centroid = (x_cen, y_cen)
-    #     return self.centroid
+    def fill_image(self, image):
+        image_copy = image.copy()
+        width, height = image_copy.size
+        center = (int(0.5 * width), int(0.5 * height))
+        ImageDraw.floodfill(image_copy, xy=center, value=(0, 0, 0, 0))
+        return image_copy
