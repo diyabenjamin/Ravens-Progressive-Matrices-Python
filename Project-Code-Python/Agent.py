@@ -9,8 +9,12 @@
 # These methods will be necessary for the project's main method to run.
 
 # Install Pillow and uncomment this line to access image processing.
+
 import numpy as np
 from PIL import Image, ImageChops, ImageDraw
+
+HIGH_SIMILARITY_THRESHOLD = 0.98
+LOW_SIMILARITY_THRESHOLD = 0.97
 
 
 class Agent:
@@ -31,149 +35,175 @@ class Agent:
     #
     # Make sure to return your answer *as an integer* at the end of Solve().
     # Returning your answer as a string may cause your program to crash.
+
+    image_numbers = [None] * 7
+    image_a = None
+    image_b = None
+    image_c = None
+
+    def setup_global_variables(self, problem):
+        for i in range(1, 7):
+            self.image_numbers[i] = Image.open(problem.figures[str(i)].visualFilename)
+
+        self.image_a = Image.open(problem.figures['A'].visualFilename)
+        self.image_b = Image.open(problem.figures['B'].visualFilename)
+        self.image_c = Image.open(problem.figures['C'].visualFilename)
+
     def Solve(self, problem):
         print problem.name
+        option = -1
 
-        image_numbers = [None] * 7
-        for i in range(1, 7):
-            image_numbers[i] = Image.open(problem.figures[str(i)].visualFilename)
+        self.setup_global_variables(problem)
 
-        image_a = Image.open(problem.figures['A'].visualFilename)
-        image_b = Image.open(problem.figures['B'].visualFilename)
-        image_c = Image.open(problem.figures['C'].visualFilename)
+        option = self.solve_image_difference() if option == -1 else option
+        option = self.solve_image_reflection() if option == -1 else option
+        option = self.solve_image_rotation() if option == -1 else option
+        option = self.solve_image_fill() if option == -1 else option
+        option = self.solve_image_vertices_count() if option == -1 else option
 
-        # if A, B and C are same, get the answer that is same as B
-        diff_ab = ImageChops.difference(image_a, image_b)
-        diff_ac = ImageChops.difference(image_a, image_c)
-        diff = ImageChops.difference(diff_ab, diff_ac)
-        if not diff.getbbox():
-            print 'A, B, C are same'
-            for i in range(1, 7):
-                if not ImageChops.difference(image_b, image_numbers[i]).getbbox():
-                    return i
+        print option
 
-        # if A and C are same or if A and B are same
-        if self.get_similarity_ratio(image_a, image_c) > 0.98:
-            print 'A and C are same'
-            index = 0
-            curr_max_val = 0
-            for i in range(1, 7):
-                similarity_ratio = self.get_similarity_ratio(image_b, image_numbers[i])
-                if similarity_ratio > 0.98 and similarity_ratio > curr_max_val:
-                    index = i
-                    curr_max_val = similarity_ratio
-            if index > 0:
-                return index
-        elif self.get_similarity_ratio(image_a, image_b) > 0.98:
-            print 'A and B are same'
-            index = 0
-            curr_max_val = 0
-            for i in range(1, 7):
-                similarity_ratio = self.get_similarity_ratio(image_c, image_numbers[i])
-                if similarity_ratio > 0.98 and similarity_ratio > curr_max_val:
-                    index = i
-                    curr_max_val = similarity_ratio
-            if index > 0:
-                return index
+        return option
 
-        # Transposed flip left to right image A same as B
-        image_at = image_a.transpose(Image.FLIP_LEFT_RIGHT)
-        image_ct = image_c.transpose(Image.FLIP_LEFT_RIGHT)
-
-        similarity_ratio_atb = self.get_similarity_ratio(image_at, image_b)
-        index = 0
-        curr_max_val = 0
-        if similarity_ratio_atb > 0.98:
-            # and self.rms_difference(image_at, image_b) < 5:
-            print 'flip left-right A and B are same'
-            for i in range(1, 7):
-                similarity_ratio_ctnumbers = self.get_similarity_ratio(image_ct, image_numbers[i])
-                if similarity_ratio_ctnumbers > 0.97 and similarity_ratio_ctnumbers > curr_max_val:
-                    index = i
-                    curr_max_val = similarity_ratio_ctnumbers
-            if index > 0:
-                return index
-
-        # Transposed flip left to right image A same as C
-        image_at = image_a.transpose(Image.FLIP_TOP_BOTTOM)
-        image_bt = image_b.transpose(Image.FLIP_TOP_BOTTOM)
-        similarity_ratio_atc = self.get_similarity_ratio(image_at, image_c)
-        index = 0
-        curr_max_value = 0
-        if similarity_ratio_atc > 0.98:
-            print 'flip left-right A and C are same'
-            for i in range(1, 7):
-                similarity_ratio_btnumbers = self.get_similarity_ratio(image_bt, image_numbers[i])
-                if similarity_ratio_btnumbers > 0.97 and similarity_ratio_btnumbers > curr_max_value:
-                    index = i
-                    curr_max_value = similarity_ratio_btnumbers
-            if index > 0:
-                return index
-
-        # Rotate A from 45 to 315 is same as C or same as B
-        for k in range(1, 8):
-            image_ar = image_a.convert('L').point(lambda i: i < 150 and 255).rotate(45 * k)
-            image_br = image_b.convert('L').point(lambda i: i < 150 and 255).rotate(45 * k)
-            image_cr = image_c.convert('L').point(lambda i: i < 150 and 255).rotate(45 * k)
-            similarity_ratio_arc = self.get_similarity_ratio(image_ar, image_c.convert('L').point(
-                lambda i: i < 150 and 255))
-            similarity_ratio_arb = self.get_similarity_ratio(image_ar, image_b.convert('L').point(
-                lambda i: i < 150 and 255))
-            index = 0
-            max_ratio = 0
-            if similarity_ratio_arc > 0.97:
-                print 'A rotate and C are same'
-                for i in range(1, 7):
-                    image_num_r = image_numbers[i].convert('L').point(lambda i: i < 150 and 255)
-                    similarity_ratio_brnumbers = self.get_similarity_ratio(image_br, image_num_r)
-                    if similarity_ratio_brnumbers > 0.97 and similarity_ratio_brnumbers > max_ratio:
-                        index = i
-                        max_ratio = similarity_ratio_brnumbers
-                if index > 0:
-                    return index
-            elif similarity_ratio_arb > 0.97:
-                print 'A rotate and B are same'
-                for i in range(1, 7):
-                    image_num_r = image_numbers[i].convert('L').point(lambda i: i < 150 and 255)
-                    similarity_ratio_crnumbers = self.get_similarity_ratio(image_cr, image_num_r)
-                    if similarity_ratio_crnumbers > 0.96 and similarity_ratio_crnumbers > max_ratio:
-                        index = i
-                        max_ratio = similarity_ratio_crnumbers
-                if index > 0:
-                    return index
-
-        # Basic B-10/B-11
-        diff_image = ImageChops.invert(ImageChops.difference(image_a, image_b))
-        new_image = ImageChops.invert(ImageChops.difference(image_c, diff_image))
+    def solve_image_difference(self):
+        # check for difference between image a and b, then find answer that has similar transition with c
+        diff_image = ImageChops.invert(ImageChops.difference(self.image_a, self.image_b))
+        new_image = ImageChops.invert(ImageChops.difference(self.image_c, diff_image))
         option = 0
         max_similarity_ratio = 0
         for i in range(1, 7):
-            similarity_ratio = self.get_similarity_ratio(new_image, image_numbers[i])
-            if round(similarity_ratio, 2) >= 0.97 and similarity_ratio > max_similarity_ratio:
+            similarity_ratio = self.get_similarity_ratio(new_image, self.image_numbers[i])
+            if round(similarity_ratio, 2) >= LOW_SIMILARITY_THRESHOLD and similarity_ratio > max_similarity_ratio:
                 option = i
                 max_similarity_ratio = similarity_ratio
-
         if option > 0:
-            print 'Challenge B-09/ Basic B-10/B-11', max_similarity_ratio
+            # print 'Basic B-10/B-11'
             return option
 
-        # Basic B-09
-        new_image_a = self.fill_image(image_a)
-        similarity_ratio_a_b = self.get_similarity_ratio(new_image_a, image_b)
+        # check for difference between image a and c, then find answer that has similar transition with b
+        diff_image = ImageChops.invert(ImageChops.difference(self.image_a, self.image_c))
+        new_image = ImageChops.invert(ImageChops.difference(self.image_b, diff_image))
+        option = 0
+        max_similarity_ratio = 0
+        for i in range(1, 7):
+            similarity_ratio = self.get_similarity_ratio(new_image, self.image_numbers[i])
+            if round(similarity_ratio, 2) >= LOW_SIMILARITY_THRESHOLD and similarity_ratio > max_similarity_ratio:
+                option = i
+                max_similarity_ratio = similarity_ratio
+        if option > 0:
+            # print '**********'
+            return option
 
-        if round(similarity_ratio_a_b, 2) >= 0.97:
+        return -1
+
+    def solve_image_reflection(self):
+        # left-right flip of image A is same as B, then find answer that has similar transition with C
+        image_at = self.image_a.transpose(Image.FLIP_LEFT_RIGHT)
+        image_ct = self.image_c.transpose(Image.FLIP_LEFT_RIGHT)
+        index = 0
+        curr_max_val = 0
+        if self.get_similarity_ratio(image_at, self.image_b) > HIGH_SIMILARITY_THRESHOLD:
+            # print 'flip left-right A and B are same'
+            for i in range(1, 7):
+                similarity_ratio_ct_numbers = self.get_similarity_ratio(image_ct, self.image_numbers[i])
+                if similarity_ratio_ct_numbers > LOW_SIMILARITY_THRESHOLD and similarity_ratio_ct_numbers > curr_max_val:
+                    index = i
+                    curr_max_val = similarity_ratio_ct_numbers
+            if index > 0:
+                return index
+
+        # top-down flip of image A is same as C, then find answer that has similar transition with B
+        image_at = self.image_a.transpose(Image.FLIP_TOP_BOTTOM)
+        image_bt = self.image_b.transpose(Image.FLIP_TOP_BOTTOM)
+        index = 0
+        curr_max_value = 0
+        if self.get_similarity_ratio(image_at, self.image_c) > HIGH_SIMILARITY_THRESHOLD:
+            # print 'flip top-down A and C are same'
+            for i in range(1, 7):
+                similarity_ratio_bt_numbers = self.get_similarity_ratio(image_bt, self.image_numbers[i])
+                if similarity_ratio_bt_numbers > LOW_SIMILARITY_THRESHOLD and similarity_ratio_bt_numbers > curr_max_value:
+                    index = i
+                    curr_max_value = similarity_ratio_bt_numbers
+            if index > 0:
+                return index
+
+        return -1
+
+    def solve_image_rotation(self):
+        # Rotate A from 45 to 315 and check if it is similar to C or B
+        for k in range(1, 8):
+            image_ar = self.image_a.convert('L').point(lambda i: i < 128 and 255).rotate(45 * k)
+            image_br = self.image_b.convert('L').point(lambda i: i < 128 and 255).rotate(45 * k)
+            image_cr = self.image_c.convert('L').point(lambda i: i < 128 and 255).rotate(45 * k)
+
+            similarity_ratio_ar_c = self.get_similarity_ratio(image_ar, self.image_c.convert('L').point(
+                lambda i: i < 128 and 255))
+            similarity_ratio_ar_b = self.get_similarity_ratio(image_ar, self.image_b.convert('L').point(
+                lambda i: i < 128 and 255))
+            index = 0
+            max_ratio = 0
+            # print round(similarity_ratio_ar_b, 2)
+            if round(similarity_ratio_ar_c, 2) >= LOW_SIMILARITY_THRESHOLD:
+                # print 'A rotate and C are same'
+                for i in range(1, 7):
+                    image_number = self.image_numbers[i].convert('L').point(lambda i: i < 128 and 255)
+                    similarity_ratio_br_numbers = self.get_similarity_ratio(image_br, image_number)
+                    if round(similarity_ratio_br_numbers,
+                             2) >= LOW_SIMILARITY_THRESHOLD and similarity_ratio_br_numbers > max_ratio:
+                        index = i
+                        max_ratio = similarity_ratio_br_numbers
+                if index > 0:
+                    return index
+            elif round(similarity_ratio_ar_b, 2) >= LOW_SIMILARITY_THRESHOLD:
+                # print 'A rotate and B are same'
+                for i in range(1, 7):
+                    image_number = self.image_numbers[i].convert('L').point(lambda i: i < 128 and 255)
+                    similarity_ratio_cr_numbers = self.get_similarity_ratio(image_cr, image_number)
+                    if round(similarity_ratio_cr_numbers,
+                             2) >= LOW_SIMILARITY_THRESHOLD and similarity_ratio_cr_numbers > max_ratio:
+                        index = i
+                        max_ratio = similarity_ratio_cr_numbers
+                if index > 0:
+                    return index
+        return -1
+
+    def solve_image_fill(self):
+        # Check if images a and b are unfilled/filled, then find answer that has similar transition with c
+        new_image_a = self.fill_image(self.image_a)
+        similarity_ratio_a_b = self.get_similarity_ratio(new_image_a, self.image_b)
+        if round(similarity_ratio_a_b, 2) >= LOW_SIMILARITY_THRESHOLD:
             option = 0
             max_similarity_ratio = 0
             for i in range(1, 7):
-                new_image_c = self.fill_image(image_c)
-                similarity_ratio = self.get_similarity_ratio(new_image_c, image_numbers[i])
-                if round(similarity_ratio, 2) >= 0.97 and similarity_ratio > max_similarity_ratio:
+                new_image_c = self.fill_image(self.image_c)
+                similarity_ratio = self.get_similarity_ratio(new_image_c, self.image_numbers[i])
+                if round(similarity_ratio, 2) >= LOW_SIMILARITY_THRESHOLD and similarity_ratio > max_similarity_ratio:
                     option = i
                     max_similarity_ratio = similarity_ratio
-
             if option > 0:
-                print 'Fill image - Basic B-09'
+                # print 'Fill image - Basic B-09'
                 return option
+        return -1
+
+    def solve_image_vertices_count(self):
+        # count number of vertices for image a and b, apply same transition for c
+        a_vertices = self.get_number_of_vertices(self.image_a)
+        b_vertices = self.get_number_of_vertices(self.image_b)
+        c_vertices = self.get_number_of_vertices(self.image_c)
+        if a_vertices > b_vertices:
+            diff_vertices_a_b = a_vertices - b_vertices
+            dif_vertices_c_ab = c_vertices - diff_vertices_a_b
+            for i in range(1, 7):
+                if dif_vertices_c_ab == self.get_number_of_vertices(self.image_numbers[i]):
+                    # print 'Vertices count'
+                    return i
+        elif b_vertices > a_vertices:
+            diff_vertices_a_b = b_vertices - a_vertices
+            dif_vertices_c_ab = c_vertices + diff_vertices_a_b
+            for i in range(1, 7):
+                if dif_vertices_c_ab == self.get_number_of_vertices(self.image_numbers[i]):
+                    # print 'Vertices count'
+                    return i
 
         return -1
 
@@ -202,3 +232,23 @@ class Agent:
         center = (int(0.5 * width), int(0.5 * height))
         ImageDraw.floodfill(image_copy, xy=center, value=(0, 0, 0, 0))
         return image_copy
+
+    def get_number_of_vertices(self, image):
+        w, h = image.size
+        D = image.getdata()
+        B = {i % w + i / w * 1j for i in range(w * h) if D[i] != D[0]}
+        n = d = 1
+        o = v = q = p = max(B, key=abs)
+        while p - w:
+            p += d * 1j
+            e = 2 * ({p} < B) + ({p + d} < B)
+            if e != 2:
+                e %= 2
+                d *= 1j - e * 2j
+                p -= d / 1j ** e
+            if abs(p - q) > 5:
+                t = (q - v) * (p - q).conjugate()
+                q = p;
+                w = o
+                if .98 * abs(t) > t.real: n += 1; v = p
+        return n
