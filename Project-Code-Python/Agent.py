@@ -76,43 +76,58 @@ class Agent:
             option = self.solve_image_fill() if option == -1 else option
             option = self.solve_image_vertices_count() if option == -1 else option
         elif problem.problemType == '3x3':
+            option = self.solve_similar_image_3x3() if option == -1 else option
+            option = self.solve_triangular_image_pattern() if option == -1 else option
             option = self.solve_image_difference_3x3() if option == -1 else option
         return option
 
     # 3x3 functions starts from here
 
+    def solve_similar_image_3x3(self):
+        image_similarity_a_b = self.get_similarity_ratio(self.image_a, self.image_b)
+        image_similarity_b_c = self.get_similarity_ratio(self.image_b, self.image_c)
+        image_similarity_d_e = self.get_similarity_ratio(self.image_d, self.image_e)
+        image_similarity_e_f = self.get_similarity_ratio(self.image_e, self.image_f)
+        image_similarity_g_h = self.get_similarity_ratio(self.image_g, self.image_h)
+
+        if (
+                image_similarity_a_b >= LOW_SIMILARITY_THRESHOLD and
+                image_similarity_b_c >= LOW_SIMILARITY_THRESHOLD and
+                abs(image_similarity_a_b - image_similarity_b_c) <= 0.0001 and
+                image_similarity_d_e >= LOW_SIMILARITY_THRESHOLD and
+                image_similarity_e_f >= LOW_SIMILARITY_THRESHOLD and
+                abs(image_similarity_d_e - image_similarity_e_f) <= 0.0001 and
+                image_similarity_g_h >= LOW_SIMILARITY_THRESHOLD
+        ):
+            for i in range(1, 9):
+                image_similarity_i = self.get_similarity_ratio(self.image_h, self.image_numbers[i])
+                if image_similarity_i >= LOW_SIMILARITY_THRESHOLD and \
+                        abs(image_similarity_g_h - image_similarity_i) <= 0.0001:
+                    print 'Solving with Similar Image.'
+                    return i
+
+        return -1
+
+    def solve_triangular_image_pattern(self):
+        image_multiply_b_d = ImageChops.multiply(self.image_b, self.image_d)
+        image_diff_e_bd = self.get_similarity_ratio(image_multiply_b_d, self.image_e)
+
+        if image_diff_e_bd > HIGH_SIMILARITY_THRESHOLD:
+            image_multiply_c_g = ImageChops.multiply(self.image_c, self.image_g)
+            for i in range(1,9):
+                image_diff_i_cg = self.get_similarity_ratio(image_multiply_c_g, self.image_numbers[i])
+                if image_diff_i_cg > HIGH_SIMILARITY_THRESHOLD:
+                    print 'Triangular image pattern..'
+                    return i
+        return -1
+
     def solve_image_difference_3x3(self):
-        # check for difference between image a and b, then find answer that has similar transition with c
-
-        # ImageChops.invert(ImageChops.subtract(self.image_a, self.image_b)).show()
-        # ImageChops.invert(ImageChops.subtract(self.image_b, self.image_c)).show()
-
-        # print 'a-b:', self.get_similarity_ratio(self.image_a, self.image_b)
-        # print 'b-c:', self.get_similarity_ratio(self.image_b, self.image_c)
-        # print 'd-e:', self.get_similarity_ratio(self.image_d, self.image_e)
-        # print 'e-f:', self.get_similarity_ratio(self.image_e, self.image_f)
-        # print 'g-h:', self.get_similarity_ratio(self.image_g, self.image_h)
-        # print 'h-1:', self.get_similarity_ratio(self.image_h, self.image_numbers[1])
-        # print 'h-2:', self.get_similarity_ratio(self.image_h, self.image_numbers[2])
-        # print 'h-3:', self.get_similarity_ratio(self.image_h, self.image_numbers[3])
-        # print 'h-4:', self.get_similarity_ratio(self.image_h, self.image_numbers[4])
-        # print 'h-5:', self.get_similarity_ratio(self.image_h, self.image_numbers[5])
-        # print 'h-6:', self.get_similarity_ratio(self.image_h, self.image_numbers[6])
-        # print 'h-7:', self.get_similarity_ratio(self.image_h, self.image_numbers[7])
-        # print 'h-8:', self.get_similarity_ratio(self.image_h, self.image_numbers[8])
-
         diff_image_a_b = self.get_similarity_ratio(self.image_a, self.image_b)
         diff_image_b_c = self.get_similarity_ratio(self.image_b, self.image_c)
         diff_image_d_e = self.get_similarity_ratio(self.image_d, self.image_e)
         diff_image_e_f = self.get_similarity_ratio(self.image_e, self.image_f)
         diff_image_g_h = self.get_similarity_ratio(self.image_g, self.image_h)
 
-        # if (round(diff_image_a_b, 2) == round(diff_image_b_c, 2)) and (
-        #         round(diff_image_d_e, 2) == round(diff_image_e_f, 2)):
-        #     for i in range(1, 9):
-        #         diff_image_h_i = self.get_similarity_ratio(self.image_h, self.image_numbers[i])
-        #         if round(diff_image_g_h, 2) == round(diff_image_h_i, 2):
-        #             return i
 
         diff_row_1 = diff_image_a_b - diff_image_b_c
         diff_row_2 = diff_image_d_e - diff_image_e_f
@@ -131,7 +146,7 @@ class Agent:
                     option = i
                     min_difference = abs(1 - difference)
             if option > 0 and min_difference < 0.1:
-                print "1*****", min_difference
+                # print "1*****", min_difference
                 return option
 
         diff_row_1_2 = diff_row_1 - diff_row_2
@@ -152,7 +167,7 @@ class Agent:
                 option = i
                 min_difference = difference
         if option > 0 and min_difference < 0.01:
-            print "2*****", min_difference
+            # print "2*****", min_difference
             return option
 
         return -1
