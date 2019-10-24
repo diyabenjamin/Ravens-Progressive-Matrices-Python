@@ -11,7 +11,7 @@
 # Install Pillow and uncomment this line to access image processing.
 
 import numpy as np
-from PIL import Image, ImageChops, ImageDraw
+from PIL import Image, ImageChops, ImageDraw, ImageFilter
 
 HIGH_SIMILARITY_THRESHOLD = 0.98
 LOW_SIMILARITY_THRESHOLD = 0.97
@@ -75,13 +75,61 @@ class Agent:
             option = self.solve_image_rotation() if option == -1 else option
             option = self.solve_image_fill() if option == -1 else option
             option = self.solve_image_vertices_count() if option == -1 else option
+            return option
         elif problem.problemType == '3x3':
             option = self.solve_similar_image_3x3() if option == -1 else option
-            option = self.solve_triangular_image_pattern() if option == -1 else option
+            # print '1', option
+            option = self.solve_similar_xy_axes_image_3x3() if option == -1 else option
+            # print '2', option
+            option = self.solve_triangular_image_pattern_3x3() if option == -1 else option
+            # print '3', option
+            option = self.solve_flip_image_pattern_3x3() if option == -1 else option
+            # print '4', option
+            option = self.solve_image_get_vertices_3x3() if option == -1 else option
+            # print '5', option
             option = self.solve_image_difference_3x3() if option == -1 else option
-        return option
+            # print '6', option
+            return option
 
     # 3x3 functions starts from here
+
+    def solve_similar_xy_axes_image_3x3(self):
+        options = []
+        g_xmin, g_xmax, g_ymin, g_ymax = self.get_x_and_y_values_images(self.image_g)
+        h_xmin, h_xmax, h_ymin, h_ymax = self.get_x_and_y_values_images(self.image_h)
+        c_xmin, c_xmax, c_ymin, c_ymax = self.get_x_and_y_values_images(self.image_c)
+        f_xmin, f_xmax, f_ymin, f_ymax = self.get_x_and_y_values_images(self.image_f)
+
+        # print 'expected_gc:', g_xmin, g_xmax, c_ymin, c_ymax
+        # print 'expected_hf:', h_xmin, h_xmax, f_ymin, f_ymax
+
+        if (
+                self.is_same(g_xmin, h_xmin, 2) and
+                self.is_same(g_xmax, h_xmax, 2) and
+                self.is_same(c_ymin, f_ymin, 2) and
+                self.is_same(c_ymax, f_ymax, 2)
+        ):
+            for i in range(1, 9):
+                i_xmin, i_xmax, i_ymin, i_ymax = self.get_x_and_y_values_images(self.image_numbers[i])
+                # print i, i_xmin, i_xmax, i_ymin, i_ymax
+                if (
+                        self.is_same(i_xmin, h_xmin, 2) and
+                        self.is_same(i_xmax, h_xmax, 2) and
+                        self.is_same(i_ymin, f_ymin, 2) and
+                        self.is_same(i_ymax, f_ymax, 2)
+                ):
+                    options.append(i)
+
+        if len(options) == 1:
+            print 'In similar xy axes images'
+            return options[0]
+
+        # self.image_numbers[2].show()
+        # image_g_o = ImageChops.offset(self.image_g, xoffset=self.image_g.width / 2, yoffset=0)
+        # image_g_o.show()
+        #
+        # print('***', self.get_similarity_ratio(image_g_o, self.image_numbers[2]))
+        return -1
 
     def solve_similar_image_3x3(self):
         image_similarity_a_b = self.get_similarity_ratio(self.image_a, self.image_b)
@@ -108,17 +156,36 @@ class Agent:
 
         return -1
 
-    def solve_triangular_image_pattern(self):
+    def solve_triangular_image_pattern_3x3(self):
         image_multiply_b_d = ImageChops.multiply(self.image_b, self.image_d)
         image_diff_e_bd = self.get_similarity_ratio(image_multiply_b_d, self.image_e)
 
         if image_diff_e_bd > HIGH_SIMILARITY_THRESHOLD:
             image_multiply_c_g = ImageChops.multiply(self.image_c, self.image_g)
-            for i in range(1,9):
+            for i in range(1, 9):
                 image_diff_i_cg = self.get_similarity_ratio(image_multiply_c_g, self.image_numbers[i])
                 if image_diff_i_cg > HIGH_SIMILARITY_THRESHOLD:
                     print 'Triangular image pattern..'
                     return i
+        return -1
+
+    def solve_flip_image_pattern_3x3(self):
+        image_at = self.image_a.transpose(Image.FLIP_LEFT_RIGHT)
+        image_similarity_at_c = self.get_similarity_ratio(image_at, self.image_c)
+        image_dt = self.image_d.transpose(Image.FLIP_LEFT_RIGHT)
+        image_similarity_dt_f = self.get_similarity_ratio(image_dt, self.image_f)
+        if image_similarity_at_c > HIGH_SIMILARITY_THRESHOLD and \
+                image_similarity_dt_f > HIGH_SIMILARITY_THRESHOLD:
+            image_gt = self.image_g.transpose(Image.FLIP_LEFT_RIGHT)
+            for i in range(1, 9):
+                image_similarity_gt_i = self.get_similarity_ratio(image_gt, self.image_numbers[i])
+                if image_similarity_gt_i > HIGH_SIMILARITY_THRESHOLD:
+                    print 'Flip image pattern'
+                    return i
+        return -1
+
+    def solve_image_get_vertices_3x3(self):
+        # ImageChops.invert(ImageChops.add(ImageChops.invert(self.image_c), ImageChops.invert(self.image_g))).show()
         return -1
 
     def solve_image_difference_3x3(self):
@@ -127,7 +194,6 @@ class Agent:
         diff_image_d_e = self.get_similarity_ratio(self.image_d, self.image_e)
         diff_image_e_f = self.get_similarity_ratio(self.image_e, self.image_f)
         diff_image_g_h = self.get_similarity_ratio(self.image_g, self.image_h)
-
 
         diff_row_1 = diff_image_a_b - diff_image_b_c
         diff_row_2 = diff_image_d_e - diff_image_e_f
@@ -155,20 +221,24 @@ class Agent:
         # print "diff_row_1:", diff_row_1, " diff_row_2:", diff_row_2
         # print "diff_row_1_2:", diff_row_1_2, "expected_diff_row_3:", expected_diff_row_3
 
-        print 'inside diff of 2'
-        option = 0
-        min_difference = 1
-        for i in range(1, 9):
-            diff_image_h_i = self.get_similarity_ratio(self.image_h, self.image_numbers[i])
-            diff_row_3 = diff_image_g_h - diff_image_h_i
-            difference = expected_diff_row_3 - diff_row_3
-            # print i, expected_diff_row_3, diff_row_3, difference
-            if 0 < difference < min_difference:
-                option = i
-                min_difference = difference
-        if option > 0 and min_difference < 0.01:
-            # print "2*****", min_difference
-            return option
+        diff_1 = abs(abs(diff_row_1) - abs(diff_row_1_2))
+        diff_2 = abs(abs(diff_row_2) - abs(diff_row_1_2))
+
+        if diff_1 < 0.00075 or diff_2 < 0.00075:
+            # print 'inside diff of 2'
+            option = 0
+            min_difference = 1
+            for i in range(1, 9):
+                diff_image_h_i = self.get_similarity_ratio(self.image_h, self.image_numbers[i])
+                diff_row_3 = diff_image_g_h - diff_image_h_i
+                difference = expected_diff_row_3 - diff_row_3
+                # print i, expected_diff_row_3, diff_row_3, difference
+                if 0 < difference < min_difference:
+                    option = i
+                    min_difference = difference
+            if option > 0 and min_difference < 0.01:
+                # print "2*****", min_difference
+                return option
 
         return -1
 
@@ -235,11 +305,11 @@ class Agent:
         return -1
 
     def solve_image_rotation(self):
-        # Rotate A from 45 to 315 and check if it is similar to C or B
-        for k in range(1, 8):
-            image_ar = self.image_a.convert('L').point(lambda i: i < 128 and 255).rotate(45 * k)
-            image_br = self.image_b.convert('L').point(lambda i: i < 128 and 255).rotate(45 * k)
-            image_cr = self.image_c.convert('L').point(lambda i: i < 128 and 255).rotate(45 * k)
+        # Rotate A from 90 to 270 and check if it is similar to C or B
+        for k in range(1, 4):
+            image_ar = self.image_a.convert('L').point(lambda i: i < 128 and 255).rotate(90 * k)
+            image_br = self.image_b.convert('L').point(lambda i: i < 128 and 255).rotate(90 * k)
+            image_cr = self.image_c.convert('L').point(lambda i: i < 128 and 255).rotate(90 * k)
 
             similarity_ratio_ar_c = self.get_similarity_ratio(image_ar, self.image_c.convert('L').point(
                 lambda i: i < 128 and 255))
@@ -351,3 +421,49 @@ class Agent:
                 w = o
                 if .98 * abs(t) > t.real: n += 1; v = p
         return n
+
+    def get_x_and_y_values_images(self, image):
+        image_l = image.convert('L')
+        img_binary = np.array(image_l)
+
+        x_min = y_min = 200
+        x_max = y_max = 0
+
+        image_flag = False
+        non_zero_count = image.width
+
+        for x in range(img_binary.shape[0]):
+            if image_flag is False and non_zero_count > np.count_nonzero(img_binary[x]):
+                x_min = x
+                image_flag = True
+            if image_flag is True and non_zero_count == np.count_nonzero(img_binary[x]):
+                x_max = x
+                break
+
+        image_flag = False
+        non_zero_count = image.height
+
+        for y in range(img_binary.shape[1]):
+            if image_flag is False and non_zero_count > np.count_nonzero(img_binary[:, y]):
+                y_min = y
+                image_flag = True
+            if image_flag is True and non_zero_count == np.count_nonzero(img_binary[:, y]):
+                y_max = y
+                break
+
+        # for y in range(img_binary.shape[1]):
+        #     if len(np.where(img_binary[:, y] == 0)[0]) > 0:
+        #         if image_flag is False:
+        #             y_min = np.where(img_binary[:, y] == 0)[0][0]
+        #             image_flag = True
+        #         if image_flag is True:
+        #             y_max = np.where(img_binary[:, y] == 0)[0][0]
+        #     if image_flag is True and non_zero_count == np.count_nonzero(img_binary[:, y]):
+        #         break
+
+        # print 'X:', x_min, x_max
+        # print 'Y:', y_min, y_max
+        return x_min, x_max, y_min, y_max
+
+    def is_same(self, value1, value2, diff=0):
+        return abs(value1 - value2) <= diff
