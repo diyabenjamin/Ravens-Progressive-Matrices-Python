@@ -2,37 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="687d4a34-9623-4ed9-b7e8-e1926a783ca7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../Cubic08.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../DiyaBenjamin_Homework_2.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../DiyaBenjamin_Homework_2.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../DiyaBenjamin_Journal_Project1.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Diya_Project1_Reflections.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Diya_Project2_Reflections.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Goel1.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ImageChops.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../JDF2-Starter.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../KBAI - Project 1 Reflection.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../KBAI - Project 3 Reflection.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lecture Notes_Test1.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Project 1 Reflection.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Project-Code-Python.zip" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Project3_reflection_kbai.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../RPM-visual-algo.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../kbai_ebook.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../rpm_project.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../~$cture Notes.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../~$yaBenjamin_Homework_2.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../~$ya_Project1_Reflections.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../~$ya_Project2_Reflections.docx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lecture Notes.docx" beforeDir="false" afterPath="$PROJECT_DIR$/../Lecture Notes.docx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Diya_Project2_Reflections.docx" beforeDir="false" afterPath="$PROJECT_DIR$/../Diya_Project2_Reflections.docx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Project-Code-Python.zip" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/Agent.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AgentAnswers.csv" beforeDir="false" afterPath="$PROJECT_DIR$/AgentAnswers.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProblemResults.csv" beforeDir="false" afterPath="$PROJECT_DIR$/ProblemResults.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Problems/Challenge Problems C/ProblemList.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Problems/Challenge Problems C/ProblemList.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SetResults.csv" beforeDir="false" afterPath="$PROJECT_DIR$/SetResults.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/student.zip" beforeDir="false" afterPath="$PROJECT_DIR$/student.zip" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Project1_Reflections.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kbai_ebook.pdf" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -46,7 +24,42 @@
         <entry file="file://$PROJECT_DIR$/ProblemResults.csv">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="135">
-              <caret line="9" column="29" selection-start-line="9" selection-start-column="29" selection-end-line="9" selection-end-column="29" />
+              <caret line="9" column="30" lean-forward="true" selection-start-line="9" selection-start-column="30" selection-end-line="9" selection-end-column="30" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-03/Basic Problem C-03.PNG">
+          <provider selected="true" editor-type-id="images" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/ProblemList.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="17" lean-forward="true" selection-start-column="17" selection-end-line="11" selection-end-column="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Agent.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="217">
+              <caret line="87" lean-forward="true" selection-start-line="87" selection-end-line="87" />
+              <folding>
+                <element signature="e#416#434#0" expanded="true" />
+                <element signature="e#11995#13412#0" />
+                <element signature="e#13460#15025#0" />
+                <element signature="e#15071#17103#0" />
+                <element signature="e#17145#17986#0" />
+                <element signature="e#18038#18941#0" />
+                <element signature="e#18992#19169#0" />
+                <element signature="e#19227#19743#0" />
+                <element signature="e#19786#20003#0" />
+                <element signature="e#20058#20634#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -57,34 +70,7 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/ProblemList.txt">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Agent.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="310">
-              <caret line="91" column="25" lean-forward="true" selection-start-line="91" selection-start-column="25" selection-end-line="91" selection-end-column="25" />
-              <folding>
-                <element signature="e#416#434#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-02/Basic Problem C-02.PNG">
-          <provider selected="true" editor-type-id="images" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-03/Basic Problem C-03.PNG">
-          <provider selected="true" editor-type-id="images" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-09/Basic Problem C-09.PNG">
           <provider selected="true" editor-type-id="images" />
         </entry>
       </file>
@@ -92,7 +78,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>mean</find>
       <find>bbox</find>
       <find>hist</find>
       <find>inside B-04</find>
@@ -122,6 +107,7 @@
       <find>np.array(image</find>
       <find>shape</find>
       <find>print</find>
+      <find>offset</find>
     </findStrings>
     <replaceStrings>
       <replace>self.image_a</replace>
@@ -141,11 +127,11 @@
       <list>
         <option value="$PROJECT_DIR$/Problems/Basic Problems B/BACKUP_ProblemList.txt" />
         <option value="$PROJECT_DIR$/AgentAnswers.csv" />
-        <option value="$PROJECT_DIR$/ProblemResults.csv" />
         <option value="$PROJECT_DIR$/Problems/Basic Problems B/ProblemList.txt" />
         <option value="$PROJECT_DIR$/RavensProject.py" />
         <option value="$PROJECT_DIR$/Problems/Challenge Problems C/ProblemList.txt" />
         <option value="$PROJECT_DIR$/Problems/ProblemSetList.txt" />
+        <option value="$PROJECT_DIR$/ProblemResults.csv" />
         <option value="$PROJECT_DIR$/Problems/Basic Problems C/ProblemList.txt" />
         <option value="$PROJECT_DIR$/Agent.py" />
       </list>
@@ -163,42 +149,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope">
-        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
-          <expand>
-            <path>
-              <item name="Project-Code-Python" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
-            </path>
-            <path>
-              <item name="Project-Code-Python" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="Problems" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="Project-Code-Python" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="Problems" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="Basic Problems C" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="Project-Code-Python" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="Problems" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="Basic Problems C" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="Basic Problem C-08" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="Project-Code-Python" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="Problems" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="Basic Problems C" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="Basic Problem C-09" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -223,6 +173,63 @@
               <item name="Problems" type="462c0819:PsiDirectoryNode" />
               <item name="Basic Problems B" type="462c0819:PsiDirectoryNode" />
               <item name="Basic Problem B-06" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope">
+        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
+          <expand>
+            <path>
+              <item name="Project-Code-Python" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+            </path>
+            <path>
+              <item name="Project-Code-Python" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="Problems" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="Project-Code-Python" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="Problems" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="Basic Problems C" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="Project-Code-Python" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="Problems" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="Basic Problems C" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="Basic Problem C-02" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="Project-Code-Python" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="Problems" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="Basic Problems C" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="Basic Problem C-03" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="Project-Code-Python" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="Problems" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="Basic Problems C" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="Basic Problem C-05" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="Project-Code-Python" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="Problems" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="Basic Problems C" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="Basic Problem C-08" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="Project-Code-Python" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="Problems" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="Basic Problems C" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="Basic Problem C-11" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
           </expand>
           <select />
@@ -305,14 +312,32 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="9" y="30" width="1260" height="737" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21388216" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32868218" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49878934" visible="true" weight="0.3379845" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49878934" weight="0.4155039" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.43410853" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32868218" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32868218" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.49878934" visible="true" weight="0.27751938" />
+      <window_info anchor="bottom" id="Python Console" order="9" weight="0.32868218" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50121063" side_tool="true" weight="0.20465116" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21388216" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32868218" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49878934" visible="true" weight="0.4155039" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.43410853" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -321,25 +346,6 @@
       <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49878934" weight="0.27751938" />
       <window_info anchor="bottom" id="Python Console" order="9" weight="0.32868218" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50121063" side_tool="true" weight="0.20465116" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-    </layout>
-    <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22276029" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49878934" weight="0.24031007" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.5767442" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.32868218" />
-      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32868218" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.49959645" visible="true" weight="0.20465116" />
-      <window_info anchor="bottom" id="Python Console" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50121063" side_tool="true" weight="0.22945736" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -448,36 +454,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Problems/Basic Problems B/Challenge Problem B-05/Challenge Problem B-05.PNG">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$USER_HOME$/venv/lib/python2.7/site-packages/PIL/Image.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34965">
-          <caret line="2336" lean-forward="true" selection-start-line="2336" selection-end-line="2336" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/venv/lib/python2.7/site-packages/PIL/ImageDraw.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5257">
-          <caret line="366" column="30" selection-start-line="366" selection-start-column="25" selection-end-line="366" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Problems/Basic Problems B/Challenge Problem B-08/Challenge Problem B-08.PNG">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Problems/Basic Problems B/BACKUP_ProblemList.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" column="22" lean-forward="true" selection-end-line="23" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Problems/Basic Problems B/Basic Problem B-12/Basic Problem B-12.PNG">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/Problems/Basic Problems B/Basic Problem B-11/Basic Problem B-11.PNG">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -540,21 +516,6 @@
     <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-12/ProblemAnswer.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-05/Basic Problem C-05.PNG">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-07/Basic Problem C-07.PNG">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-06/Basic Problem C-06.PNG">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-12/Basic Problem C-12.PNG">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-04/Basic Problem C-04.PNG">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/SetResults.csv">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -574,9 +535,6 @@
     <entry file="file://$PROJECT_DIR$/Problems/Basic Problems D/Basic Problem D-02/Basic Problem D-02.PNG">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/Problems/Challenge Problems C/Challenge Problem C-04/Challenge Problem C-04.PNG">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/Problems/Basic Problems B/ProblemList.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
@@ -590,25 +548,10 @@
     <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-01/Basic Problem C-01.PNG">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/Problems/Challenge Problems C/Challenge Problem C-01/Challenge Problem C-01.PNG">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Problems/Challenge Problems C/Challenge Problem C-05/Challenge Problem C-05.PNG">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Problems/Challenge Problems C/Challenge Problem C-02/Challenge Problem C-02.PNG">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/Problems/Challenge Problems C/ProblemList.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/Problems/Challenge Problems C/Challenge Problem C-03/Challenge Problem C-03.PNG">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-10/Basic Problem C-10.PNG">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-11/Basic Problem C-11.PNG">
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/Problems/ProblemSetList.txt">
@@ -621,31 +564,95 @@
     <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-09/Basic Problem C-09.PNG">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-03/Basic Problem C-03.PNG">
+    <entry file="file://$PROJECT_DIR$/Problems/Challenge Problems C/Challenge Problem C-09/Challenge Problem C-09.PNG">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Problems/Challenge Problems C/Challenge Problem C-05/ProblemAnswer.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Problems/Challenge Problems C/Challenge Problem C-04/Challenge Problem C-04.PNG">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Problems/Challenge Problems C/Challenge Problem C-05/Challenge Problem C-05.PNG">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Problems/Challenge Problems C/Challenge Problem C-07/Challenge Problem C-07.PNG">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Problems/Challenge Problems C/Challenge Problem C-02/ProblemAnswer.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Problems/Challenge Problems C/Challenge Problem C-01/Challenge Problem C-01.PNG">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Problems/Challenge Problems C/Challenge Problem C-02/Challenge Problem C-02.PNG">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Problems/Challenge Problems C/Challenge Problem C-11/Challenge Problem C-11.PNG">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-04/Basic Problem C-04.PNG">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-10/Basic Problem C-10.PNG">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-07/Basic Problem C-07.PNG">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-06/C.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-06/Basic Problem C-06.PNG">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-12/Basic Problem C-12.PNG">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-11/Basic Problem C-11.PNG">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-05/Basic Problem C-05.PNG">
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-02/Basic Problem C-02.PNG">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/ProblemResults.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="29" selection-start-line="9" selection-start-column="29" selection-end-line="9" selection-end-column="29" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-03/Basic Problem C-03.PNG">
+      <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/Basic Problem C-08/Basic Problem C-08.PNG">
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/Problems/Basic Problems C/ProblemList.txt">
-      <provider selected="true" editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="17" lean-forward="true" selection-start-column="17" selection-end-line="11" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ProblemResults.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="30" lean-forward="true" selection-start-line="9" selection-start-column="30" selection-end-line="9" selection-end-column="30" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Agent.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="91" column="25" lean-forward="true" selection-start-line="91" selection-start-column="25" selection-end-line="91" selection-end-column="25" />
+        <state relative-caret-position="217">
+          <caret line="87" lean-forward="true" selection-start-line="87" selection-end-line="87" />
           <folding>
             <element signature="e#416#434#0" expanded="true" />
+            <element signature="e#11995#13412#0" />
+            <element signature="e#13460#15025#0" />
+            <element signature="e#15071#17103#0" />
+            <element signature="e#17145#17986#0" />
+            <element signature="e#18038#18941#0" />
+            <element signature="e#18992#19169#0" />
+            <element signature="e#19227#19743#0" />
+            <element signature="e#19786#20003#0" />
+            <element signature="e#20058#20634#0" />
           </folding>
         </state>
       </provider>

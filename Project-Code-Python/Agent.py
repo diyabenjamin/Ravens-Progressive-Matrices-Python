@@ -78,20 +78,33 @@ class Agent:
             return option
         elif problem.problemType == '3x3':
             option = self.solve_similar_image_3x3() if option == -1 else option
-            # print '1', option
             option = self.solve_similar_xy_axes_image_3x3() if option == -1 else option
-            # print '2', option
             option = self.solve_triangular_image_pattern_3x3() if option == -1 else option
-            # print '3', option
             option = self.solve_flip_image_pattern_3x3() if option == -1 else option
-            # print '4', option
-            option = self.solve_image_get_vertices_3x3() if option == -1 else option
-            # print '5', option
             option = self.solve_image_difference_3x3() if option == -1 else option
-            # print '6', option
+            option = self.solve_offset_images_3x3() if option == -1 else option
+            # option = self.solve_dark_pixel_ratio_3x3() if option == -1 else option
             return option
 
     # 3x3 functions starts from here
+
+    def solve_offset_images_3x3(self):
+        image_a_o = ImageChops.offset(self.image_a, xoffset=self.image_a.width/2, yoffset=0)
+        image_d_o = ImageChops.offset(self.image_d, xoffset=self.image_d.width/2, yoffset=0)
+        image_g_o = ImageChops.offset(self.image_g, xoffset=self.image_g.width/2, yoffset=0)
+        similarity_ao_c = self.get_similarity_ratio(image_a_o, self.image_c)
+        similarity_do_f = self.get_similarity_ratio(image_d_o, self.image_f)
+        max_ratio = 0
+        index = 0
+        if similarity_ao_c > 0.91 and similarity_do_f > 0.91:
+            for i in range(1, 9):
+                similarity_go_i = self.get_similarity_ratio(image_g_o, self.image_numbers[i])
+                if similarity_go_i > 0.91 and similarity_go_i > max_ratio:
+                    index = i
+                    max_ratio = similarity_go_i
+                if index > 0:
+                    return index
+        return -1
 
     def solve_similar_xy_axes_image_3x3(self):
         options = []
@@ -99,9 +112,6 @@ class Agent:
         h_xmin, h_xmax, h_ymin, h_ymax = self.get_x_and_y_values_images(self.image_h)
         c_xmin, c_xmax, c_ymin, c_ymax = self.get_x_and_y_values_images(self.image_c)
         f_xmin, f_xmax, f_ymin, f_ymax = self.get_x_and_y_values_images(self.image_f)
-
-        # print 'expected_gc:', g_xmin, g_xmax, c_ymin, c_ymax
-        # print 'expected_hf:', h_xmin, h_xmax, f_ymin, f_ymax
 
         if (
                 self.is_same(g_xmin, h_xmin, 2) and
@@ -111,7 +121,6 @@ class Agent:
         ):
             for i in range(1, 9):
                 i_xmin, i_xmax, i_ymin, i_ymax = self.get_x_and_y_values_images(self.image_numbers[i])
-                # print i, i_xmin, i_xmax, i_ymin, i_ymax
                 if (
                         self.is_same(i_xmin, h_xmin, 2) and
                         self.is_same(i_xmax, h_xmax, 2) and
@@ -124,11 +133,6 @@ class Agent:
             print 'In similar xy axes images'
             return options[0]
 
-        # self.image_numbers[2].show()
-        # image_g_o = ImageChops.offset(self.image_g, xoffset=self.image_g.width / 2, yoffset=0)
-        # image_g_o.show()
-        #
-        # print('***', self.get_similarity_ratio(image_g_o, self.image_numbers[2]))
         return -1
 
     def solve_similar_image_3x3(self):
@@ -152,6 +156,7 @@ class Agent:
                 if image_similarity_i >= LOW_SIMILARITY_THRESHOLD and \
                         abs(image_similarity_g_h - image_similarity_i) <= 0.0001:
                     print 'Solving with Similar Image.'
+                    # compare with all options ?
                     return i
 
         return -1
@@ -159,12 +164,12 @@ class Agent:
     def solve_triangular_image_pattern_3x3(self):
         image_multiply_b_d = ImageChops.multiply(self.image_b, self.image_d)
         image_diff_e_bd = self.get_similarity_ratio(image_multiply_b_d, self.image_e)
-
         if image_diff_e_bd > HIGH_SIMILARITY_THRESHOLD:
             image_multiply_c_g = ImageChops.multiply(self.image_c, self.image_g)
             for i in range(1, 9):
                 image_diff_i_cg = self.get_similarity_ratio(image_multiply_c_g, self.image_numbers[i])
                 if image_diff_i_cg > HIGH_SIMILARITY_THRESHOLD:
+                    # compare with all options ?
                     print 'Triangular image pattern..'
                     return i
         return -1
@@ -180,13 +185,46 @@ class Agent:
             for i in range(1, 9):
                 image_similarity_gt_i = self.get_similarity_ratio(image_gt, self.image_numbers[i])
                 if image_similarity_gt_i > HIGH_SIMILARITY_THRESHOLD:
+                    # compare with all options ?
                     print 'Flip image pattern'
                     return i
         return -1
 
-    def solve_image_get_vertices_3x3(self):
-        # ImageChops.invert(ImageChops.add(ImageChops.invert(self.image_c), ImageChops.invert(self.image_g))).show()
-        return -1
+    # def solve_dark_pixel_ratio_3x3(self):
+    #     print 'a', self.get_dark_pixel_ratio(self.image_a)
+    #     print 'b', self.get_dark_pixel_ratio(self.image_b)
+    #     print 'c', self.get_dark_pixel_ratio(self.image_c)
+    #     print 'd', self.get_dark_pixel_ratio(self.image_d)
+    #     print 'e', self.get_dark_pixel_ratio(self.image_e)
+    #     print 'f', self.get_dark_pixel_ratio(self.image_f)
+    #     print 'g', self.get_dark_pixel_ratio(self.image_g)
+    #     print 'h', self.get_dark_pixel_ratio(self.image_h)
+    #
+    #     dpr_a = self.get_dark_pixel_ratio(self.image_a)
+    #     dpr_b = self.get_dark_pixel_ratio(self.image_b)
+    #     dpr_c = self.get_dark_pixel_ratio(self.image_c)
+    #     dpr_d = self.get_dark_pixel_ratio(self.image_d)
+    #     dpr_e = self.get_dark_pixel_ratio(self.image_e)
+    #     dpr_f = self.get_dark_pixel_ratio(self.image_f)
+    #     dpr_g = self.get_dark_pixel_ratio(self.image_g)
+    #     dpr_h = self.get_dark_pixel_ratio(self.image_h)
+    #
+    #     print '### ', abs(dpr_a - dpr_b), ' ', abs(dpr_b - dpr_c), ' ', abs(dpr_d - dpr_e), ' ', abs(dpr_e - dpr_f)
+    #
+    #     if self.is_same(abs(dpr_a - dpr_b), abs(dpr_b - dpr_c), 0.003) \
+    #             and self.is_same(abs(dpr_d - dpr_e), abs(dpr_e - dpr_f), 0.003):
+    #         diff_g_h = dpr_g - dpr_h
+    #         for i in range(1, 9):
+    #             dpr_i = self.get_dark_pixel_ratio(self.image_numbers[i])
+    #             expected_dpr_i = dpr_h - diff_g_h
+    #             print dpr_i, ' --- ', expected_dpr_i
+    #             if self.is_same(dpr_i, expected_dpr_i, 0.003):
+    #                 return i
+    #
+    #     # for i in range(1, 9):
+    #     #     print i, '-', self.get_dark_pixel_ratio(self.image_numbers[i])
+    #
+    #     return -1
 
     def solve_image_difference_3x3(self):
         diff_image_a_b = self.get_similarity_ratio(self.image_a, self.image_b)
@@ -198,7 +236,6 @@ class Agent:
         diff_row_1 = diff_image_a_b - diff_image_b_c
         diff_row_2 = diff_image_d_e - diff_image_e_f
 
-        # print 'diff row1-row2: ', round(diff_row_1 / diff_row_2, 2)
         if round(diff_row_1 / diff_row_2, 2) == 1:
             print 'inside diff of 1'
             option = 0
@@ -225,7 +262,7 @@ class Agent:
         diff_2 = abs(abs(diff_row_2) - abs(diff_row_1_2))
 
         if diff_1 < 0.00075 or diff_2 < 0.00075:
-            # print 'inside diff of 2'
+            print 'inside diff of 2'
             option = 0
             min_difference = 1
             for i in range(1, 9):
@@ -467,3 +504,15 @@ class Agent:
 
     def is_same(self, value1, value2, diff=0):
         return abs(value1 - value2) <= diff
+
+    def get_dark_pixel_ratio(self, image):
+        image_l = image.convert('L')
+        img_binary = np.array(image_l)
+        img_binary[img_binary < 50] = 1
+        img_binary[img_binary >= 50] = 0
+        black = 0
+        for row in img_binary:
+            for cell in row:
+                if cell == 0:
+                    black += 1
+        return 1 - (black/float(image.height * image.width))
