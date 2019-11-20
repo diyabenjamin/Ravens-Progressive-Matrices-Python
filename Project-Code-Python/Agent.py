@@ -87,10 +87,20 @@ class Agent:
             option = self.solve_triangular_image_pattern_3x3() if option == -1 else option
             option = self.solve_row_difference_images_3x3() if option == -1 else option  # P3
             option = self.solve_dpr_difference_3x3() if option == -1 else option  # P3
+            option = self.solve_diagonal_commonalities_3x3() if option == -1 else option  # P3
             option = self.solve_diagonal_difference_images_3x3() if option == -1 else option
             return option
 
     # 3x3 functions starts from here
+
+    def solve_diagonal_commonalities_3x3(self):
+        image_ae = ImageChops.subtract_modulo(self.image_a, self.image_e)
+        for i in range(1, 9):
+            image_ei = ImageChops.subtract_modulo(self.image_e, self.image_numbers[i])
+            if self.is_same(self.get_dark_pixel_ratio(image_ae), self.get_dark_pixel_ratio(image_ei), 0.00001):
+                print 'diagonal commonalities images..'
+                return i
+        return -1
 
     def solve_dpr_difference_3x3(self):
         image_b_o = ImageChops.offset(self.image_b, xoffset=-50, yoffset=0)
