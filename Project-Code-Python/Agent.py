@@ -79,62 +79,88 @@ class Agent:
         elif problem.problemType == '3x3':
             option = self.solve_similar_xy_axes_image_3x3() if option == -1 else option
             option = self.solve_flip_image_pattern_3x3() if option == -1 else option
-            option = self.solve_triangular_image_pattern_3x3() if option == -1 else option  # P2 D-11
+            option = self.solve_triangular_image_pattern_3x3() if option == -1 else option  # P2
             option = self.solve_row_combine_image_pattern_3x3() if option == -1 else option  # P3 E-01,02,03,06
+            option = self.solve_offset_images_3x3() if option == -1 else option
             option = self.solve_extreme_triangular_image_similarity_3x3() if option == -1 else option  # P3 D-02,03
-
-            option = self.solve_row_pixel_difference_3x3() if option == -1 else option  # P3 D-01, C-02,03
-
             option = self.solve_row_difference_images_3x3() if option == -1 else option  # P3 E-05,07,08
+            option = self.solve_row_col_pixel_difference_3x3() if option == -1 else option  # P3 D-01, C-02,03
             option = self.solve_row_column_commonalities_3x3() if option == -1 else option  # P3 D-04,05
             option = self.solve_row_col_image_rotation_3x3() if option == -1 else option  # Challenge D-02,03
-            option = self.solve_offset_images_3x3() if option == -1 else option
-
             option = self.solve_row_offset_difference_3x3() if option == -1 else option  # P3 E-04
-            option = self.solve_row_dpr_subtract_3x3() if option == -1 else option  # P3 E-12
-
+            option = self.solve_row_dpr_subtract_add_3x3() if option == -1 else option  # P3 E-12
             option = self.split_image_horizontal_similarity_3x3() if option == -1 else option  # P3 E-09
             option = self.solve_extreme_triangular_multiply_3x3() if option == -1 else option  # P3 D-09
             option = self.solve_row_add_images_3x3() if option == -1 else option  # P3 E-10,11
-
-            option = self.solve_dark_pixel_ratio_3x3() if option == -1 else option  # C-08
-
             option = self.solve_diagonal_subtract_mod_3x3() if option == -1 else option  # P3 D-06
             option = self.solve_extreme_triangular_dark_pixel_addition_3x3() if option == -1 else option  # P3 D-08
-            # option = self.solve_diagonal_extreme_triangular_commonalities_3x3() if option == -1 else option  # P3 D-07
-
-            option = self.solve_extreme_triangular_pixel_difference_3x3() if option == -1 else option  # P3 D-07,12
             option = self.solve_diagonal_commonalities_3x3() if option == -1 else option  # P3 3 D-10
-            # option = self.solve_diagonal_difference_images_3x3() if option == -1 else option  # E-12
+            option = self.solve_extreme_triangular_pixel_difference_3x3() if option == -1 else option  # P3 D-07,12
+            option = self.solve_row_col_common_pixel_ratio_3x3() if option == -1 else option  # previously dpr
             return option
 
     # 3x3 functions starts from here
 
-    def solve_row_dpr_subtract_3x3(self):
-        diff_dpr_ab = self.get_dark_pixel_ratio(self.image_a) - self.get_dark_pixel_ratio(self.image_b)
-        diff_dpr_de = self.get_dark_pixel_ratio(self.image_d) - self.get_dark_pixel_ratio(self.image_e)
-        diff_dpr_gh = self.get_dark_pixel_ratio(self.image_g) - self.get_dark_pixel_ratio(self.image_h)
+    def solve_row_dpr_subtract_add_3x3(self):
+        #subtract
+        diff_dpr_ab = abs(self.get_dark_pixel_ratio(self.image_a) - self.get_dark_pixel_ratio(self.image_b))
+        diff_dpr_de = abs(self.get_dark_pixel_ratio(self.image_d) - self.get_dark_pixel_ratio(self.image_e))
+        diff_dpr_gh = abs(self.get_dark_pixel_ratio(self.image_g) - self.get_dark_pixel_ratio(self.image_h))
         if self.is_same(diff_dpr_ab, self.get_dark_pixel_ratio(self.image_c), 0.002) and \
                 self.is_same(diff_dpr_de, self.get_dark_pixel_ratio(self.image_f), 0.002):
             for i in range(1, 9):
-                if(self.is_same(diff_dpr_gh, self.get_dark_pixel_ratio(self.image_numbers[i]), 0.002)):
+                if self.is_same(diff_dpr_gh, self.get_dark_pixel_ratio(self.image_numbers[i]), 0.001):
                     print 'row dpr subtract'
                     return i
-
+        # add
+        diff_dpr_ab = self.get_dark_pixel_ratio(self.image_a) + self.get_dark_pixel_ratio(self.image_b)
+        diff_dpr_de = self.get_dark_pixel_ratio(self.image_d) + self.get_dark_pixel_ratio(self.image_e)
+        diff_dpr_gh = self.get_dark_pixel_ratio(self.image_g) + self.get_dark_pixel_ratio(self.image_h)
+        if self.is_same(diff_dpr_ab, self.get_dark_pixel_ratio(self.image_c), 0.002) and \
+                self.is_same(diff_dpr_de, self.get_dark_pixel_ratio(self.image_f), 0.002):
+            for i in range(1, 9):
+                if self.is_same(diff_dpr_gh, self.get_dark_pixel_ratio(self.image_numbers[i]), 0.001):
+                    print diff_dpr_gh - self.get_dark_pixel_ratio(self.image_numbers[i])
+                    print 'row dpr add'
+                    return i
         return -1
 
-    def solve_row_pixel_difference_3x3(self):
-        diff_dpr_ab = self.get_dark_pixel_ratio(self.image_a) - self.get_dark_pixel_ratio(self.image_b)
-        diff_dpr_bc = self.get_dark_pixel_ratio(self.image_b) - self.get_dark_pixel_ratio(self.image_c)
-        diff_dpr_de = self.get_dark_pixel_ratio(self.image_d) - self.get_dark_pixel_ratio(self.image_e)
-        diff_dpr_ef = self.get_dark_pixel_ratio(self.image_e) - self.get_dark_pixel_ratio(self.image_f)
-        diff_dpr_gh = self.get_dark_pixel_ratio(self.image_g) - self.get_dark_pixel_ratio(self.image_h)
+    def solve_row_col_pixel_difference_3x3(self):
+        # row dpr
+        diff_dpr_ab = abs(self.get_dark_pixel_ratio(self.image_a) - self.get_dark_pixel_ratio(self.image_b))
+        diff_dpr_bc = abs(self.get_dark_pixel_ratio(self.image_b) - self.get_dark_pixel_ratio(self.image_c))
+        diff_dpr_de = abs(self.get_dark_pixel_ratio(self.image_d) - self.get_dark_pixel_ratio(self.image_e))
+        diff_dpr_ef = abs(self.get_dark_pixel_ratio(self.image_e) - self.get_dark_pixel_ratio(self.image_f))
+        diff_dpr_gh = abs(self.get_dark_pixel_ratio(self.image_g) - self.get_dark_pixel_ratio(self.image_h))
         if self.is_same(diff_dpr_ab, diff_dpr_bc, 0.003) and self.is_same(diff_dpr_de, diff_dpr_ef, 0.003):
+            option = 0
+            min_diff = 0.1
             for i in range(1, 9):
-                diff_dpr_hi = self.get_dark_pixel_ratio(self.image_h) - self.get_dark_pixel_ratio(self.image_numbers[i])
-                if self.is_same(diff_dpr_gh, diff_dpr_hi, 0.003):
-                    print 'row image pixel difference'
-                    return i
+                diff_dpr_hi = abs(self.get_dark_pixel_ratio(self.image_h) - self.get_dark_pixel_ratio(self.image_numbers[i]))
+                if self.is_same(diff_dpr_gh, diff_dpr_hi, 0.003) and diff_dpr_hi < min_diff:
+                    min_diff = diff_dpr_hi
+                    option = i
+            if option > 0:
+                print 'row image pixel difference'
+                return option
+
+        # column dpr
+        diff_dpr_ad = abs(self.get_dark_pixel_ratio(self.image_a) - self.get_dark_pixel_ratio(self.image_d))
+        diff_dpr_dg = abs(self.get_dark_pixel_ratio(self.image_d) - self.get_dark_pixel_ratio(self.image_g))
+        diff_dpr_be = abs(self.get_dark_pixel_ratio(self.image_b) - self.get_dark_pixel_ratio(self.image_e))
+        diff_dpr_eh = abs(self.get_dark_pixel_ratio(self.image_e) - self.get_dark_pixel_ratio(self.image_h))
+        diff_dpr_cf = abs(self.get_dark_pixel_ratio(self.image_c) - self.get_dark_pixel_ratio(self.image_f))
+        if self.is_same(diff_dpr_ad, diff_dpr_dg, 0.003) and self.is_same(diff_dpr_be, diff_dpr_eh, 0.003):
+            option = 0
+            min_diff = 0.1
+            for i in range(1, 9):
+                diff_dpr_fi = abs(self.get_dark_pixel_ratio(self.image_f) - self.get_dark_pixel_ratio(self.image_numbers[i]))
+                if self.is_same(diff_dpr_cf, diff_dpr_fi, 0.003) and diff_dpr_fi < min_diff:
+                    min_diff = diff_dpr_fi
+                    option = i
+            if option > 0:
+                print 'col image pixel difference'
+                return option
         return -1
 
     def solve_row_col_image_rotation_3x3(self):
@@ -179,18 +205,20 @@ class Agent:
     def solve_extreme_triangular_dark_pixel_addition_3x3(self):
         diff_dpr_f_h = abs(self.get_dark_pixel_ratio(self.image_f) - self.get_dark_pixel_ratio(self.image_h))
         diff_dpr_b_d = abs(self.get_dark_pixel_ratio(self.image_b) - self.get_dark_pixel_ratio(self.image_d))
-        if self.is_same(diff_dpr_f_h, self.get_dark_pixel_ratio(self.image_a), 0.02):
+        diff_dpr_c_g = abs(self.get_dark_pixel_ratio(self.image_c) - self.get_dark_pixel_ratio(self.image_g))
+        if self.is_same(diff_dpr_f_h, self.get_dark_pixel_ratio(self.image_a), 0.02) and \
+                self.is_same(diff_dpr_c_g, self.get_dark_pixel_ratio(self.image_e), 0.02):
             for i in range(1, 9):
                 if self.is_same(diff_dpr_b_d, self.get_dark_pixel_ratio(self.image_numbers[i]), 0.01):
                     print 'extreme triangular dpr addition..'
                     return i
         diff_dpr_b_f = abs(self.get_dark_pixel_ratio(self.image_b) - self.get_dark_pixel_ratio(self.image_f))
         diff_dpr_d_h = abs(self.get_dark_pixel_ratio(self.image_d) - self.get_dark_pixel_ratio(self.image_h))
-        diff_dpr_a_e = abs(self.get_dark_pixel_ratio(self.image_a) - self.get_dark_pixel_ratio(self.image_e))
         if self.is_same(diff_dpr_b_f, self.get_dark_pixel_ratio(self.image_g), 0.02) and \
                 self.is_same(diff_dpr_d_h, self.get_dark_pixel_ratio(self.image_c), 0.02):
             for i in range(1, 9):
-                if self.is_same(diff_dpr_a_e, self.get_dark_pixel_ratio(self.image_numbers[i]), 0.01):
+                diff_dpr_a_i = abs(self.get_dark_pixel_ratio(self.image_a) - self.get_dark_pixel_ratio(self.image_numbers[i]))
+                if self.is_same(diff_dpr_a_i, self.get_dark_pixel_ratio(self.image_e), 0.01):
                     print 'extreme triangular dpr addition 2..'
                     return i
         return -1
@@ -200,42 +228,73 @@ class Agent:
         image_dh_add = ImageChops.add(self.image_d, self.image_h)
         image_gb_add = ImageChops.add(self.image_g, self.image_b)
         image_bf_add = ImageChops.add(self.image_b, self.image_f)
-        image_ae_add = ImageChops.add(self.image_a, self.image_e)
         if self.get_similarity_ratio(image_cd_add, image_dh_add) > HIGH_SIMILARITY_THRESHOLD and \
-                self.get_similarity_ratio(image_gb_add, image_bf_add) > HIGH_SIMILARITY_THRESHOLD:
+                self.get_similarity_ratio(image_gb_add, image_bf_add) > HIGH_SIMILARITY_THRESHOLD and \
+                self.is_same(self.get_dark_pixel_ratio(image_cd_add), self.get_dark_pixel_ratio(image_dh_add), 0.003) and \
+                self.is_same(self.get_dark_pixel_ratio(image_gb_add), self.get_dark_pixel_ratio(image_bf_add), 0.003):
+            option = 0
+            max_ratio = 0
             for i in range(1, 9):
+                image_ai_add = ImageChops.add(self.image_a, self.image_numbers[i])
                 image_ei_add = ImageChops.add(self.image_e, self.image_numbers[i])
-                if self.get_similarity_ratio(image_ae_add, image_ei_add) > LOW_SIMILARITY_THRESHOLD and \
-                    self.is_same(self.get_dark_pixel_ratio(image_ae_add), self.get_dark_pixel_ratio(image_ei_add), 0.03) and \
+                similarity_ratio = self.get_similarity_ratio(image_ai_add, image_ei_add)
+                if similarity_ratio > HIGH_SIMILARITY_THRESHOLD and similarity_ratio > max_ratio and \
+                    self.is_same(self.get_dark_pixel_ratio(image_ai_add), self.get_dark_pixel_ratio(image_ei_add), 0.002) and \
                         not self.get_similarity_ratio(self.image_a, self.image_numbers[i]) > HIGH_SIMILARITY_THRESHOLD and \
                         not self.get_similarity_ratio(self.image_e, self.image_numbers[i]) > HIGH_SIMILARITY_THRESHOLD:
-                    print 'diagonal commonalities images..'
-                    return i
+                    max_ratio = similarity_ratio
+                    option = i
+            if option > 0:
+                print 'diagonal commonalities images..'
+                return i
 
         image_ce_add = ImageChops.add(self.image_c, self.image_e)
         image_eg_add = ImageChops.add(self.image_e, self.image_g)
         image_ah_add = ImageChops.add(self.image_a, self.image_h)
-        image_hf_add = ImageChops.add(self.image_h, self.image_f)
-        image_bd_add = ImageChops.add(self.image_b, self.image_d)
+        image_af_add = ImageChops.add(self.image_a, self.image_f)
         if self.get_similarity_ratio(image_ce_add, image_eg_add) > HIGH_SIMILARITY_THRESHOLD and \
-                self.get_similarity_ratio(image_ah_add, image_hf_add) > HIGH_SIMILARITY_THRESHOLD:
+                self.get_similarity_ratio(image_ah_add, image_af_add) > HIGH_SIMILARITY_THRESHOLD and \
+                self.is_same(self.get_dark_pixel_ratio(image_ce_add), self.get_dark_pixel_ratio(image_eg_add), 0.003) and \
+                self.is_same(self.get_dark_pixel_ratio(image_ah_add), self.get_dark_pixel_ratio(image_af_add), 0.003):
+            option = 0
+            max_ratio = 0
             for i in range(1, 9):
                 image_bi_add = ImageChops.add(self.image_b, self.image_numbers[i])
                 image_di_add = ImageChops.add(self.image_d, self.image_numbers[i])
-                if self.is_same(self.get_dark_pixel_ratio(image_bd_add), self.get_dark_pixel_ratio(image_bi_add), 0.01) and \
-                        self.is_same(self.get_dark_pixel_ratio(image_bd_add), self.get_dark_pixel_ratio(image_di_add), 0.01) and \
-                        self.get_similarity_ratio(image_bd_add, image_bi_add) > LOW_SIMILARITY_THRESHOLD and \
-                        self.get_similarity_ratio(image_bd_add, image_di_add) > LOW_SIMILARITY_THRESHOLD and \
-                        not self.get_similarity_ratio(self.image_a, self.image_numbers[i]) > HIGH_SIMILARITY_THRESHOLD and \
+                similarity_ratio_bdi = self.get_similarity_ratio(image_bi_add, image_di_add)
+                if self.is_same(self.get_dark_pixel_ratio(image_bi_add), self.get_dark_pixel_ratio(image_di_add), 0.002) and \
+                        similarity_ratio_bdi > HIGH_SIMILARITY_THRESHOLD and similarity_ratio_bdi > max_ratio and \
                         not self.get_similarity_ratio(self.image_b, self.image_numbers[i]) > HIGH_SIMILARITY_THRESHOLD and \
-                        not self.get_similarity_ratio(self.image_c, self.image_numbers[i]) > HIGH_SIMILARITY_THRESHOLD and \
                         not self.get_similarity_ratio(self.image_d, self.image_numbers[i]) > HIGH_SIMILARITY_THRESHOLD and \
-                        not self.get_similarity_ratio(self.image_e, self.image_numbers[i]) > HIGH_SIMILARITY_THRESHOLD and \
-                        not self.get_similarity_ratio(self.image_f, self.image_numbers[i]) > HIGH_SIMILARITY_THRESHOLD and \
+                        not self.get_similarity_ratio(self.image_a, self.image_numbers[i]) > HIGH_SIMILARITY_THRESHOLD and \
+                        not self.get_similarity_ratio(self.image_e, self.image_numbers[i]) > HIGH_SIMILARITY_THRESHOLD:
+                    max_ratio = similarity_ratio_bdi
+                    option = i
+            if option > 0:
+                print 'diagonal commonalities images 2..'
+                return i
+
+        image_fh_add = ImageChops.add(self.image_f, self.image_h)
+        if self.get_similarity_ratio(image_fh_add, self.image_f) > HIGH_SIMILARITY_THRESHOLD and \
+                self.get_similarity_ratio(image_eg_add, self.image_e) > HIGH_SIMILARITY_THRESHOLD and \
+                self.is_same(self.get_dark_pixel_ratio(image_fh_add), self.get_dark_pixel_ratio(self.image_f), 0.03) and \
+                self.is_same(self.get_dark_pixel_ratio(image_eg_add), self.get_dark_pixel_ratio(self.image_e), 0.03):
+            max_ratio = 0
+            option = 0
+            for i in range(1, 9):
+                image_di_add = ImageChops.add(self.image_d, self.image_numbers[i])
+                similarity_di = self.get_similarity_ratio(image_di_add, self.image_d)
+                if self.is_same(self.get_dark_pixel_ratio(image_di_add), self.get_dark_pixel_ratio(self.image_d), 0.02) and \
+                        similarity_di > HIGH_SIMILARITY_THRESHOLD and similarity_di > max_ratio and \
                         not self.get_similarity_ratio(self.image_g, self.image_numbers[i]) > HIGH_SIMILARITY_THRESHOLD and \
-                        not self.get_similarity_ratio(self.image_h, self.image_numbers[i]) > HIGH_SIMILARITY_THRESHOLD:
-                    print 'diagonal commonalities images 2..'
-                    return i
+                        not self.get_similarity_ratio(self.image_h, self.image_numbers[i]) > HIGH_SIMILARITY_THRESHOLD and \
+                        not self.get_similarity_ratio(self.image_b, self.image_numbers[i]) > HIGH_SIMILARITY_THRESHOLD and \
+                        not self.get_similarity_ratio(self.image_d, self.image_numbers[i]) > HIGH_SIMILARITY_THRESHOLD:
+                    max_ratio = similarity_di
+                    option = i
+            if option > 0:
+                print 'diagonal and row-column commonalities images...'
+                return option
         return -1
 
     def split_image_horizontal_similarity_3x3(self):
@@ -276,54 +335,121 @@ class Agent:
     def solve_extreme_triangular_pixel_difference_3x3(self):
         dpr_diff_a_f = abs(self.get_dark_pixel_ratio(self.image_a) - self.get_dark_pixel_ratio(self.image_f))
         dpr_diff_f_h = abs(self.get_dark_pixel_ratio(self.image_f) - self.get_dark_pixel_ratio(self.image_h))
-        if self.is_same(dpr_diff_a_f, dpr_diff_f_h, 0.006):
-            dpr_diff_b_d = abs(self.get_dark_pixel_ratio(self.image_b) - self.get_dark_pixel_ratio(self.image_d))
+        dpr_diff_c_g = abs(self.get_dark_pixel_ratio(self.image_c) - self.get_dark_pixel_ratio(self.image_g))
+        dpr_diff_e_g = abs(self.get_dark_pixel_ratio(self.image_e) - self.get_dark_pixel_ratio(self.image_g))
+        dpr_diff_b_d = abs(self.get_dark_pixel_ratio(self.image_b) - self.get_dark_pixel_ratio(self.image_d))
+        dpr_diff_a_h = abs(self.get_dark_pixel_ratio(self.image_a) - self.get_dark_pixel_ratio(self.image_h))
+        dpr_diff_c_e = abs(self.get_dark_pixel_ratio(self.image_c) - self.get_dark_pixel_ratio(self.image_e))
+
+        if self.is_same(dpr_diff_a_f, dpr_diff_f_h, 0.009) and self.is_same(dpr_diff_c_g, dpr_diff_e_g, 0.009) or \
+                self.is_same(dpr_diff_a_f, dpr_diff_f_h, 0.009) and self.is_same(dpr_diff_c_e, dpr_diff_e_g, 0.009) or \
+                self.is_same(dpr_diff_a_h, dpr_diff_f_h, 0.009) and self.is_same(dpr_diff_c_g, dpr_diff_e_g, 0.009) or \
+                self.is_same(dpr_diff_a_h, dpr_diff_f_h, 0.009) and self.is_same(dpr_diff_c_e, dpr_diff_e_g, 0.009):
+            min_diff = 0.1
+            option = 0
+            for i in range(1, 9):
+                dpr_diff_b_i = abs(self.get_dark_pixel_ratio(self.image_b) - self.get_dark_pixel_ratio(self.image_numbers[i]))
+                dpr_diff = abs(dpr_diff_b_i - dpr_diff_b_d)
+                # if self.is_same(dpr_diff_b_i, dpr_diff_b_d, 0.001): challenge D-07, Basic D-12
+                if self.is_same(dpr_diff_b_i, dpr_diff_b_d, 0.009) and dpr_diff < min_diff and \
+                        not self.get_similarity_ratio(self.image_b, self.image_numbers[i]) > HIGH_SIMILARITY_THRESHOLD and \
+                        not self.get_similarity_ratio(self.image_d, self.image_numbers[i]) > HIGH_SIMILARITY_THRESHOLD:
+                    min_diff = dpr_diff
+                    option = i
+            if option > 0:
+                print 'extreme triangular pixel diff 1a'
+                return option
+
+            min_diff = 0.1
+            option = 0
+            for i in range(1, 9):
+                dpr_diff_d_i = abs(self.get_dark_pixel_ratio(self.image_d) - self.get_dark_pixel_ratio(self.image_numbers[i]))
+                dpr_diff = abs(dpr_diff_d_i - dpr_diff_b_d)
+                if self.is_same(dpr_diff_d_i, dpr_diff_b_d, 0.009) and dpr_diff < min_diff and \
+                        not self.get_similarity_ratio(self.image_b, self.image_numbers[i]) and \
+                        not self.get_similarity_ratio(self.image_d, self.image_numbers[i]):
+                    min_diff = dpr_diff
+                    option = i
+            if option > 0:
+                print 'extreme triangular pixel diff 1b'
+                return i
+
+        # D-07
+        if self.is_same(dpr_diff_a_f, dpr_diff_a_h, 0.009) and self.is_same(dpr_diff_c_e, dpr_diff_e_g, 0.009):
             for i in range(1, 9):
                 dpr_diff_b_i = abs(self.get_dark_pixel_ratio(self.image_b) - self.get_dark_pixel_ratio(self.image_numbers[i]))
                 dpr_diff_d_i = abs(self.get_dark_pixel_ratio(self.image_d) - self.get_dark_pixel_ratio(self.image_numbers[i]))
-                if self.is_same(dpr_diff_b_d, dpr_diff_b_i, 0.006) or self.is_same(dpr_diff_b_d, dpr_diff_d_i, 0.006):
-                    print 'extreme triangular pixel diff'
+                if self.is_same(dpr_diff_b_i, dpr_diff_d_i, 0.009) and self.is_same(dpr_diff_d_i, dpr_diff_b_d, 0.009):
+                    print 'extreme triangular pixel diff 1c'
                     return i
 
         dpr_diff_c_d = abs(self.get_dark_pixel_ratio(self.image_c) - self.get_dark_pixel_ratio(self.image_d))
         dpr_diff_d_h = abs(self.get_dark_pixel_ratio(self.image_d) - self.get_dark_pixel_ratio(self.image_h))
-        if self.is_same(dpr_diff_c_d, dpr_diff_d_h, 0.006):
-            dpr_diff_a_e = abs(self.get_dark_pixel_ratio(self.image_a) - self.get_dark_pixel_ratio(self.image_e))
+        dpr_diff_g_b = abs(self.get_dark_pixel_ratio(self.image_g) - self.get_dark_pixel_ratio(self.image_b))
+        dpr_diff_b_f = abs(self.get_dark_pixel_ratio(self.image_b) - self.get_dark_pixel_ratio(self.image_f))
+        if self.is_same(dpr_diff_c_d, dpr_diff_d_h, 0.04 and self.is_same(dpr_diff_g_b, dpr_diff_b_f, 0.04)):
             for i in range(1, 9):
                 dpr_diff_a_i = abs(self.get_dark_pixel_ratio(self.image_a) - self.get_dark_pixel_ratio(self.image_numbers[i]))
                 dpr_diff_e_i = abs(self.get_dark_pixel_ratio(self.image_e) - self.get_dark_pixel_ratio(self.image_numbers[i]))
-                if self.is_same(dpr_diff_a_e, dpr_diff_a_i, 0.006) or self.is_same(dpr_diff_a_e, dpr_diff_e_i, 0.006):
-                    print 'extreme triangular pixel diff 2'
+                if self.is_same(dpr_diff_a_i, dpr_diff_e_i, 0.009):
+                    print 'extreme triangular pixel diff 2a'
+                    return i
+
+        dpr_diff_c_h = abs(self.get_dark_pixel_ratio(self.image_c) - self.get_dark_pixel_ratio(self.image_h))
+        dpr_diff_g_f = abs(self.get_dark_pixel_ratio(self.image_g) - self.get_dark_pixel_ratio(self.image_f))
+        if self.is_same(dpr_diff_c_h, dpr_diff_d_h, 0.04 and self.is_same(dpr_diff_g_f, dpr_diff_b_f, 0.04)):
+            for i in range(1, 9):
+                dpr_diff_a_e = abs(self.get_dark_pixel_ratio(self.image_a) - self.get_dark_pixel_ratio(self.image_e))
+                dpr_diff_a_i = abs(self.get_dark_pixel_ratio(self.image_a) - self.get_dark_pixel_ratio(self.image_numbers[i]))
+                if self.is_same(dpr_diff_a_e, dpr_diff_a_i, 0.009):
+                    print 'extreme triangular pixel diff 2b'
+                    return i
+
+        if self.is_same(dpr_diff_c_d, dpr_diff_c_h, 0.04 and self.is_same(dpr_diff_g_b, dpr_diff_g_f, 0.04)):
+            for i in range(1, 9):
+                dpr_diff_a_e = abs(self.get_dark_pixel_ratio(self.image_a) - self.get_dark_pixel_ratio(self.image_e))
+                dpr_diff_e_i = abs(self.get_dark_pixel_ratio(self.image_e) - self.get_dark_pixel_ratio(self.image_numbers[i]))
+                if self.is_same(dpr_diff_a_e, dpr_diff_e_i, 0.009):
+                    print 'extreme triangular pixel diff 2c'
                     return i
         return -1
 
     def solve_extreme_triangular_multiply_3x3(self):
         image_a_f = ImageChops.multiply(self.image_a, self.image_f)
-        if self.is_same(self.get_dark_pixel_ratio(image_a_f), self.get_dark_pixel_ratio(self.image_h), 0.009) and \
-                self.get_similarity_ratio(image_a_f, self.image_h) > HIGH_SIMILARITY_THRESHOLD:
+        image_g_e = ImageChops.multiply(self.image_g, self.image_e)
+        if (self.is_same(self.get_dark_pixel_ratio(image_a_f), self.get_dark_pixel_ratio(self.image_h), 0.015) and \
+                self.get_similarity_ratio(image_a_f, self.image_h) > HIGH_SIMILARITY_THRESHOLD) or \
+                (self.is_same(self.get_dark_pixel_ratio(image_g_e), self.get_dark_pixel_ratio(self.image_c), 0.015) and \
+                 self.get_similarity_ratio(image_g_e, self.image_c) > HIGH_SIMILARITY_THRESHOLD):
             for i in range(1, 9):
                 image_b_i = ImageChops.multiply(self.image_b, self.image_numbers[i])
-                if self.is_same(self.get_dark_pixel_ratio(image_b_i), self.get_dark_pixel_ratio(self.image_d), 0.009) and \
+                if self.is_same(self.get_dark_pixel_ratio(image_b_i), self.get_dark_pixel_ratio(self.image_d), 0.015) and \
                         self.get_similarity_ratio(image_b_i, self.image_d) > HIGH_SIMILARITY_THRESHOLD:
                     print 'row extreme triangular multiply images 1..'
                     return i
 
         image_a_h = ImageChops.multiply(self.image_a, self.image_h)
-        if self.is_same(self.get_dark_pixel_ratio(image_a_h), self.get_dark_pixel_ratio(self.image_f), 0.009) and \
-                self.get_similarity_ratio(image_a_h, self.image_f) > HIGH_SIMILARITY_THRESHOLD:
+        image_c_e = ImageChops.multiply(self.image_c, self.image_e)
+        if (self.is_same(self.get_dark_pixel_ratio(image_a_h), self.get_dark_pixel_ratio(self.image_f), 0.015) and \
+                self.get_similarity_ratio(image_a_h, self.image_f) > HIGH_SIMILARITY_THRESHOLD) or \
+                (self.is_same(self.get_dark_pixel_ratio(image_c_e), self.get_dark_pixel_ratio(self.image_g), 0.015) and \
+                 self.get_similarity_ratio(image_c_e, self.image_g) > HIGH_SIMILARITY_THRESHOLD):
             for i in range(1, 9):
                 image_d_i = ImageChops.multiply(self.image_d, self.image_numbers[i])
-                if self.is_same(self.get_dark_pixel_ratio(image_d_i), self.get_dark_pixel_ratio(self.image_b), 0.009) and \
+                if self.is_same(self.get_dark_pixel_ratio(image_d_i), self.get_dark_pixel_ratio(self.image_b), 0.015) and \
                         self.get_similarity_ratio(image_d_i, self.image_b) > HIGH_SIMILARITY_THRESHOLD:
                     print 'row extreme triangular multiply images 2..'
                     return i
 
         image_f_h = ImageChops.multiply(self.image_f, self.image_h)
-        if self.is_same(self.get_dark_pixel_ratio(image_f_h), self.get_dark_pixel_ratio(self.image_a), 0.009) and \
-                self.get_similarity_ratio(image_f_h, self.image_a) > HIGH_SIMILARITY_THRESHOLD:
+        image_g_c = ImageChops.multiply(self.image_g, self.image_c)
+        if (self.is_same(self.get_dark_pixel_ratio(image_f_h), self.get_dark_pixel_ratio(self.image_a), 0.015) and \
+                self.get_similarity_ratio(image_f_h, self.image_a) > HIGH_SIMILARITY_THRESHOLD) or \
+                (self.is_same(self.get_dark_pixel_ratio(image_g_c), self.get_dark_pixel_ratio(self.image_e), 0.015) and \
+                 self.get_similarity_ratio(image_g_c, self.image_e) > HIGH_SIMILARITY_THRESHOLD):
             for i in range(1, 9):
                 image_b_d = ImageChops.multiply(self.image_b, self.image_d)
-                if self.is_same(self.get_dark_pixel_ratio(image_b_d), self.get_dark_pixel_ratio(self.image_numbers[i]), 0.009) and \
+                if self.is_same(self.get_dark_pixel_ratio(image_b_d), self.get_dark_pixel_ratio(self.image_numbers[i]), 0.015) and \
                         self.get_similarity_ratio(image_b_d, self.image_numbers[i]) > HIGH_SIMILARITY_THRESHOLD:
                     print 'row extreme triangular multiply images 3..'
                     return i
@@ -348,17 +474,6 @@ class Agent:
                 print 'row column commonalities images 2..'
                 return i
         return -1
-
-    # def solve_diagonal_extreme_triangular_commonalities_3x3(self):
-    #     image_a_e = ImageChops.add(self.image_a, self.image_e)
-    #     image_b_d = ImageChops.add(self.image_b, self.image_d)
-    #     image_diag_triag = ImageChops.multiply(image_a_e, image_b_d)
-    #     for i in range(1, 9):
-    #         if self.is_same(self.get_dark_pixel_ratio(image_diag_triag), self.get_dark_pixel_ratio(self.image_numbers[i]), 0.006):
-    #             if self.get_similarity_ratio(image_diag_triag, self.image_numbers[i]) >= HIGH_SIMILARITY_THRESHOLD:
-    #                 print 'diag triag commonalities images..'
-    #                 return i
-    #     return -1
 
     def solve_diagonal_subtract_mod_3x3(self):
         image_ae = ImageChops.subtract_modulo(self.image_a, self.image_e)
@@ -413,14 +528,41 @@ class Agent:
                         self.get_similarity_ratio(image_g_h, self.image_numbers[i]) > HIGH_SIMILARITY_THRESHOLD:
                     print 'Row combine images..'
                     return i
-        elif self.is_same(self.get_dark_pixel_ratio(image_a_c), self.get_dark_pixel_ratio(self.image_b), 0.001) and \
+        if self.is_same(self.get_dark_pixel_ratio(image_a_c), self.get_dark_pixel_ratio(self.image_b), 0.001) and \
                 self.is_same(self.get_dark_pixel_ratio(image_d_f), self.get_dark_pixel_ratio(self.image_e), 0.001):
             for i in range(1, 9):
                 image_g_i = ImageChops.multiply(self.image_g, self.image_numbers[i])
                 if self.is_same(self.get_dark_pixel_ratio(image_g_i), self.get_dark_pixel_ratio(self.image_h), 0.0005) and \
+                        not self.is_same(self.get_dark_pixel_ratio(self.image_g), self.get_dark_pixel_ratio(self.image_numbers[i]), 0.001) and \
                         not self.is_same(self.get_dark_pixel_ratio(self.image_h), self.get_dark_pixel_ratio(self.image_numbers[i]), 0.001) and \
                         self.get_similarity_ratio(image_g_i, self.image_h) > HIGH_SIMILARITY_THRESHOLD:
                     print 'Row combine images 2..'
+                    return i
+        # column
+        image_a_d = ImageChops.multiply(self.image_a, self.image_d)
+        image_b_e = ImageChops.multiply(self.image_b, self.image_e)
+        image_c_f = ImageChops.multiply(self.image_c, self.image_f)
+        if self.is_same(self.get_dark_pixel_ratio(image_a_d), self.get_dark_pixel_ratio(self.image_g), 0.001) and \
+                self.is_same(self.get_dark_pixel_ratio(image_b_e), self.get_dark_pixel_ratio(self.image_h), 0.001):
+            for i in range(1, 9):
+                if self.is_same(self.get_dark_pixel_ratio(image_c_f), self.get_dark_pixel_ratio(self.image_numbers[i]), 0.002) and \
+                        not self.is_same(self.get_dark_pixel_ratio(self.image_c), self.get_dark_pixel_ratio(self.image_numbers[i]), 0.001) and \
+                        not self.is_same(self.get_dark_pixel_ratio(self.image_f), self.get_dark_pixel_ratio(self.image_numbers[i]), 0.001) and \
+                        self.get_similarity_ratio(image_c_f, self.image_numbers[i]) > HIGH_SIMILARITY_THRESHOLD:
+                    print 'Column combine images..'
+                    return i
+
+        image_a_g = ImageChops.multiply(self.image_a, self.image_g)
+        image_b_h = ImageChops.multiply(self.image_b, self.image_h)
+        if self.is_same(self.get_dark_pixel_ratio(image_a_g), self.get_dark_pixel_ratio(self.image_d), 0.001) and \
+                self.is_same(self.get_dark_pixel_ratio(image_b_h), self.get_dark_pixel_ratio(self.image_e), 0.001):
+            for i in range(1, 9):
+                image_c_i = ImageChops.multiply(self.image_c, self.image_numbers[i])
+                if self.is_same(self.get_dark_pixel_ratio(image_c_i), self.get_dark_pixel_ratio(self.image_f), 0.002) and \
+                        not self.is_same(self.get_dark_pixel_ratio(self.image_c), self.get_dark_pixel_ratio(self.image_numbers[i]), 0.001) and \
+                        not self.is_same(self.get_dark_pixel_ratio(self.image_f), self.get_dark_pixel_ratio(self.image_numbers[i]), 0.001) and \
+                        self.get_similarity_ratio(image_c_i, self.image_numbers[i]) > HIGH_SIMILARITY_THRESHOLD:
+                    print 'Column combine images..'
                     return i
         return -1
 
@@ -440,27 +582,24 @@ class Agent:
                     print 'Row add images..'
             if option > 0:
                 return option
-        return -1
 
-    # def solve_row_difference_images_3x3(self):
-    #     diff_ab = ImageChops.invert(ImageChops.difference(self.image_a, self.image_b))
-    #     diff_de = ImageChops.invert(ImageChops.difference(self.image_d, self.image_e))
-    #     diff_gh = ImageChops.invert(ImageChops.difference(self.image_g, self.image_h))
-    #     print self.get_similarity_ratio(diff_ab, self.image_c), self.get_similarity_ratio(diff_de, self.image_f)
-    #     if self.get_similarity_ratio(diff_ab, self.image_c) > HIGH_SIMILARITY_THRESHOLD and \
-    #             self.get_similarity_ratio(diff_de, self.image_f) > HIGH_SIMILARITY_THRESHOLD:
-    #         max_ratio = 0
-    #         option = 0
-    #         for i in range(1, 9):
-    #             similarity_ratio_ghi = self.get_similarity_ratio(diff_gh, self.image_numbers[i])
-    #             print 'i: ', i, similarity_ratio_ghi
-    #             if similarity_ratio_ghi > HIGH_SIMILARITY_THRESHOLD and similarity_ratio_ghi > max_ratio:
-    #                 option = i
-    #                 max_ratio = similarity_ratio_ghi
-    #                 print 'Row difference invert images..'
-    #         if option > 0:
-    #             return option
-    #     return -1
+        # column add images
+        image_a_d = ImageChops.add(self.image_a, self.image_d)
+        image_b_e = ImageChops.add(self.image_b, self.image_e)
+        image_c_f = ImageChops.add(self.image_c, self.image_f)
+        if self.get_similarity_ratio(image_a_d, self.image_g) > HIGH_SIMILARITY_THRESHOLD and \
+                self.get_similarity_ratio(image_b_e, self.image_h) > HIGH_SIMILARITY_THRESHOLD:
+            max_ratio = 0
+            option = 0
+            for i in range(1, 9):
+                similarity_cf_i = self.get_similarity_ratio(image_c_f, self.image_numbers[i])
+                if similarity_cf_i > HIGH_SIMILARITY_THRESHOLD and similarity_cf_i > max_ratio:
+                    option = i
+                    max_ratio = similarity_cf_i
+                    print 'Row add images..'
+            if option > 0:
+                return option
+        return -1
 
     def solve_row_difference_images_3x3(self):
         diff_ab = ImageChops.invert(ImageChops.difference(self.image_a, self.image_b))
@@ -469,23 +608,35 @@ class Agent:
 
         if self.get_similarity_ratio(diff_ab, self.image_c) > HIGH_SIMILARITY_THRESHOLD and \
                 self.get_similarity_ratio(diff_de, self.image_f) > HIGH_SIMILARITY_THRESHOLD:
+            max_ratio = 0
+            option = 0
             for i in range(1, 9):
-                if self.get_similarity_ratio(diff_gh, self.image_numbers[i]) > HIGH_SIMILARITY_THRESHOLD:
-                    print 'Row difference images..'
-                    return i
+                similarity_ratio = self.get_similarity_ratio(diff_gh, self.image_numbers[i])
+                if similarity_ratio > HIGH_SIMILARITY_THRESHOLD and similarity_ratio > max_ratio:
+                    max_ratio = similarity_ratio
+                    option = i
+            if option > 0:
+                print 'Row difference images..'
+                return option
 
         diff_ab_c = ImageChops.multiply(diff_ab, self.image_c)
         diff_de_f = ImageChops.multiply(diff_de, self.image_f)
-        if self.is_same(self.get_dark_pixel_ratio(diff_ab_c), self.get_dark_pixel_ratio(self.image_c), 0.01) and \
+        if self.is_same(self.get_dark_pixel_ratio(diff_ab_c), self.get_dark_pixel_ratio(self.image_c), 0.02) and \
                 self.is_same(self.get_dark_pixel_ratio(diff_de_f), self.get_dark_pixel_ratio(self.image_f), 0.02):
+            max_ratio = 0
+            option = 0
             for i in range(1, 9):
                 diff_gh_i = ImageChops.multiply(diff_gh, self.image_numbers[i])
-                if self.is_same(self.get_dark_pixel_ratio(diff_gh_i), self.get_dark_pixel_ratio(self.image_numbers[i]), 0.01) and \
+                similarity_ratio_ghi = self.get_similarity_ratio(diff_gh_i, self.image_numbers[i])
+                if self.is_same(self.get_dark_pixel_ratio(diff_gh_i), self.get_dark_pixel_ratio(self.image_numbers[i]), 0.02) and \
                         not self.is_same(self.get_dark_pixel_ratio(self.image_g), self.get_dark_pixel_ratio(self.image_numbers[i]), 0.01) and \
                         not self.is_same(self.get_dark_pixel_ratio(self.image_h), self.get_dark_pixel_ratio(self.image_numbers[i]), 0.01) and \
-                        self.get_similarity_ratio(diff_gh_i, self.image_numbers[i]) > HIGH_SIMILARITY_THRESHOLD:
-                    print 'Row difference images 2..'
-                    return i
+                        similarity_ratio_ghi > HIGH_SIMILARITY_THRESHOLD and similarity_ratio_ghi > max_ratio:
+                    max_ratio = similarity_ratio_ghi
+                    option = i
+            if option > 0:
+                print 'Row difference multiply images 2..'
+                return option
         return -1
 
     def solve_extreme_triangular_image_similarity_3x3(self):
@@ -508,23 +659,6 @@ class Agent:
                 if option > 0:
                     return option
         return -1
-
-    # def solve_diagonal_difference_images_3x3(self):
-    #     # diagonal similarity
-    #     # if self.get_dark_pixel_ratio(self.image_a) == self.get_dark_pixel_ratio(self.image_e):
-    #     #     for i in range(1, 9):
-    #     #         if self.get_dark_pixel_ratio(self.image_a) == self.get_dark_pixel_ratio(self.image_numbers[i]):
-    #     #             print 'diagonal similarity'
-    #     #             return i
-    #     # else:
-    #     # diagonal decrease
-    #     diff_a_e = self.get_dark_pixel_ratio(self.image_a) - self.get_dark_pixel_ratio(self.image_e)
-    #     for i in range(1, 9):
-    #         diff_e_i = self.get_dark_pixel_ratio(self.image_e) - self.get_dark_pixel_ratio(self.image_numbers[i])
-    #         if self.is_same(diff_a_e, diff_e_i, 0.003):
-    #             print 'diagonal decrease'
-    #             return i
-    #     return -1
 
     def solve_offset_images_3x3(self):
         image_a_o = ImageChops.offset(self.image_a, xoffset=self.image_a.width/2, yoffset=0)
@@ -604,62 +738,23 @@ class Agent:
                 return option
         return -1
 
-    def solve_dark_pixel_ratio_3x3(self):
-        dpr_a = self.get_dark_pixel_ratio(self.image_a)
-        dpr_b = self.get_dark_pixel_ratio(self.image_b)
-        dpr_c = self.get_dark_pixel_ratio(self.image_c)
-        dpr_d = self.get_dark_pixel_ratio(self.image_d)
-        dpr_e = self.get_dark_pixel_ratio(self.image_e)
-        dpr_f = self.get_dark_pixel_ratio(self.image_f)
+    def solve_row_col_common_pixel_ratio_3x3(self):
         dpr_g = self.get_dark_pixel_ratio(self.image_g)
         dpr_h = self.get_dark_pixel_ratio(self.image_h)
-
-        # row difference
-        if self.is_same(abs(dpr_a - dpr_b), abs(dpr_b - dpr_c), 0.002) \
-                and self.is_same(abs(dpr_d - dpr_e), abs(dpr_e - dpr_f), 0.002):
-            diff_g_h = dpr_g - dpr_h
-            option = 0
-            min_diff = 0.1
+        dpr_c = self.get_dark_pixel_ratio(self.image_c)
+        dpr_f = self.get_dark_pixel_ratio(self.image_f)
+        diff_g_h = abs(dpr_g - dpr_h)
+        diff_c_f = abs(dpr_c - dpr_f)
+        if self.is_same(diff_c_f, diff_g_h, 0.007):
             for i in range(1, 9):
                 dpr_i = self.get_dark_pixel_ratio(self.image_numbers[i])
-                expected_dpr_i = dpr_h - diff_g_h
-                if self.is_same(dpr_i, expected_dpr_i, 0.002) and abs(dpr_i - expected_dpr_i) < min_diff:
-                    min_diff = abs(dpr_i - expected_dpr_i)
-                    option = i
-            if option > 0:
-                print 'Inside dpr1 - row increase'
-                return option
-
-        # column difference C-11
-        if self.is_same(abs(dpr_a - dpr_d), abs(dpr_d - dpr_g), 0.002) \
-                and self.is_same(abs(dpr_b - dpr_e), abs(dpr_e - dpr_h), 0.002):
-            diff_c_f = dpr_c - dpr_f
-            option = 0
-            min_diff = 0.1
-            for i in range(1, 9):
-                dpr_i = self.get_dark_pixel_ratio(self.image_numbers[i])
-                expected_dpr_i = dpr_f - diff_c_f
-                if self.is_same(dpr_i, expected_dpr_i, 0.002) and abs(dpr_i - expected_dpr_i) < min_diff:
-                    min_diff = abs(dpr_i - expected_dpr_i)
-                    option = i
-            if option > 0:
-                print 'Inside dpr2 - column increase'
-                return option
-
-        diff_g_h = dpr_g - dpr_h
-        if self.is_same(dpr_c - dpr_f, diff_g_h, 0.007):
-            option = 0
-            min_diff = 0.1
-            for i in range(1, 9):
-                dpr_i = self.get_dark_pixel_ratio(self.image_numbers[i])
-                dpr_h_i = dpr_h - dpr_i
-                if self.is_same(diff_g_h, dpr_h_i, 0.007) and abs(diff_g_h - dpr_h_i) < min_diff:
-                    min_diff = abs(diff_g_h - dpr_h_i)
-                    option = i
-            if option > 0:
-                print 'Inside dpr3'
-                return option
-
+                diff_h_i = abs(dpr_h - dpr_i)
+                if self.is_same(diff_g_h, diff_h_i, 0.007) and dpr_g > dpr_h > dpr_i:
+                    print 'row column common dpr..'
+                    return i
+                elif self.is_same(diff_g_h, diff_h_i, 0.007) and dpr_g < dpr_h < dpr_i:
+                    print 'row column common dpr..'
+                    return i
         return -1
 
     # 2x2 functions starts from here
@@ -870,19 +965,6 @@ class Agent:
             if image_flag is True and non_zero_count == np.count_nonzero(img_binary[:, y]):
                 y_max = y
                 break
-
-        # for y in range(img_binary.shape[1]):
-        #     if len(np.where(img_binary[:, y] == 0)[0]) > 0:
-        #         if image_flag is False:
-        #             y_min = np.where(img_binary[:, y] == 0)[0][0]
-        #             image_flag = True
-        #         if image_flag is True:
-        #             y_max = np.where(img_binary[:, y] == 0)[0][0]
-        #     if image_flag is True and non_zero_count == np.count_nonzero(img_binary[:, y]):
-        #         break
-
-        # print 'X:', x_min, x_max
-        # print 'Y:', y_min, y_max
         return x_min, x_max, y_min, y_max
 
     def is_same(self, value1, value2, diff=0):
